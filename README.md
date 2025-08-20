@@ -6,12 +6,13 @@
 
 <div align="center">
 
-![Django](https://img.shields.io/badge/Django-3.2-green)
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Build](https://img.shields.io/github/actions/workflow/status/sanyimo/good_project/python-app.yml?branch=main&label=build)
-![Vercel](https://img.shields.io/badge/deployed%20on-Alwaysdata-violet?logo=alwaysdata)
+![Django](https://img.shields.io/badge/Django-green)
+![Python](https://img.shields.io/badge/Python-blue)
+![JavaScript](https://img.shields.io/badge/JavaScript-yellow)
+![MySQL](https://img.shields.io/badge/MySQL-lightblue)
+![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)
+![Deployed on Alwaysdata](https://img.shields.io/badge/Deployed%20on-Alwaysdata-violet)
+
 </div>
 
 ---
