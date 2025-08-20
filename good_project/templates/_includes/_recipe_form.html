@@ -1,0 +1,298 @@
+{% load i18n %}
+{% load static %}
+
+<form id="recipe-form" method="post" enctype="multipart/form-data"
+      action="{% if is_update %}
+                  {% url 'recipes:recipe_update' slug=object.slug %}
+              {% else %}
+                  {% url 'recipes:recipe_create' %}
+              {% endif %}"
+      aria-label="{% trans 'Formulario de receta' %}">
+
+    <div id="form-errors-container">
+        {% include "_includes/_form_errors.html" %}
+    </div>
+   
+
+    {% csrf_token %}
+    {% trans 'Para mantener el diseño final y el buen orden, se ruega seguir las pautas. Las encontrarás en el "&quest;"' %}</span>  
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">
+            {{ form.title.label }}
+            <span class="help-icon" data-help="{% trans 'Título de la receta. Max 100 caracteres.' %}">?</span>
+        </label>
+        {{ form.title }}
+    </div>       
+    <div class="form-group clearablefileinput">
+        <label for="{{ form.photo.id_for_label }}">
+            {{ form.photo.label }}
+            <span class="help-icon" data-help="{% trans 'Tamaño min 600x400px; formato webp' %}">?</span>
+        </label>       
+        
+        {% if form.instance.photo %}
+            <img id="current-image" src="{{ form.instance.photo.url }}" alt="{% trans 'Imagen actual de la receta' %}" class="recipe-image">
+        {% else %}
+            <img id="current-image" src="" alt="{% trans 'Previsualización de la imagen' %}" class="recipe-image" style="display:none;" />
+        {% endif %}        
+        {{ form.photo }}
+    </div>  
+    <fieldset class="shared">
+        <legend id="etiquetas-temas" class="visually-hidden">{% trans "Etiquetas y Temas" %}</legend>
+        <div class="form-group">
+            <label id="label_id_tags" for="{{ form.tags.id_for_label }}">
+                {{ form.tags.label }}
+                <span class="help-icon" data-help="{% trans 'Útil para la búsqueda posterior. Puedes seleccionar 1 o varios' %}">?</span>
+            </label>
+            {{ form.tags }}
+        </div>
+        <div class="form-group">
+            <label id="label_id_themes" for="{{ form.themes.id_for_label }}">
+                {{ form.themes.label }}
+                <span class="help-icon" data-help="{% trans 'Útil para la búsqueda posterior. Puedes seleccionar 1 o varios' %}">?</span>
+            </label>
+            {{ form.themes }}
+        </div>
+    </fieldset>
+    <fieldset class="shared">
+        <legend id="dificultad-categoria" class="visually-hidden">{% trans "Dificultad y Categoría" %}</legend>
+        <div class="form-group">
+            <label for="{{ form.difficulty.id_for_label }}">{{ form.difficulty.label }}</label>
+            {{ form.difficulty }}
+        </div>
+        <div class="form-group">                
+            <label for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+            {{ form.category }}
+        </div>
+    </fieldset>
+
+    <fieldset class="shared">
+        <legend id="tiempos" class="visually-hidden">{% trans "Tiempos de preparación y cocción" %}</legend>
+        <div class="form-group">
+            <label for="{{ form.prep_time.id_for_label }}">{{ form.prep_time.label }}</label>
+            {{ form.prep_time }}
+        </div>
+        <div class="form-group">
+                <label for="{{ form.cook_time.id_for_label }}">{{ form.cook_time.label }}</label>
+            {{ form.cook_time }}
+        </div>            
+    </fieldset>
+
+    <fieldset class="shared">
+        <legend id="tipo-cocina" class="visually-hidden">{% trans "Tipo de cocina y raciones" %}</legend>
+        <div class="form-group">
+            <label for="{{ form.cuisine_type.id_for_label }}">{{ form.cuisine_type.label }}</label>
+        {{ form.cuisine_type }}
+        </div>        
+        <div class="form-group">
+            <label for="{{ form.meal_types.id_for_label }}">
+                {{ form.meal_types.label }}
+                <span class="help-icon" data-help="{% trans 'Puedes seleccionar 1 o varios.' %} {% trans 'Para varios: Shift + click' %}">?</span>
+            </label>
+            {{ form.meal_types }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.servings.id_for_label }}">{{ form.servings.label }}</label>
+            {{ form.servings }}
+        </div>
+    </fieldset>
+    <fieldset class="shared">
+        <legend id="metodos-alergenos" class="visually-hidden">{% trans "Métodos y alérgenos" %}</legend>
+        <div class="form-group">
+            <label id="label_id_cooking_metods" for="{{ form.cooking_methods.id_for_label }}">
+                {{ form.cooking_methods.label }}                
+                <span class="help-icon" data-help="{% trans 'Puedes seleccionar 1 o varios.' %}">?</span>
+            </label>
+            {{ form.cooking_methods }}
+        </div>          
+        <div class="form-group">
+            <label id="label_id_allergens" for="{{ form.allergens.id_for_label }}">
+                {{ form.allergens.label }}
+                <span class="help-icon" data-help="{% trans 'Puedes seleccionar 1 o varios.' %}">?</span>
+            </label>
+            {{ form.allergens }}
+        </div>
+    </fieldset>
+
+    <fieldset class="ingredient-form">
+        <legend id="ingredientes" class="visually-hidden"><h2>{% trans "Ingredientes" %}</h2></legend>
+        <h2>{% trans "Ingredientes" %}</h2>
+        {{ ingredient_formset.management_form }}                
+        {% if ingredient_help_text %}
+            <p class="help-text">{{ ingredient_help_text }}</p>
+        {% endif %}
+        <table id="ingredient-forms">
+            <thead>
+              <tr>
+                <th id="th-ingredient_name">{% trans "Ingrediente" %}</th>
+                <th id="th-quantity">{% trans "Cantidad" %}
+                    <span class="help-icon" data-help="{% trans 'Cantidad' %}:
+                    - {% trans 'Usar números decimales (0.0)' %}
+                    - {% trans 'NO poner números negativos' %}
+                    ">?
+                </span></th>
+                <th id="th-unit">{% trans "Unidad" %}</th>
+                <th id="th-delete">{% trans "Eliminar" %}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for form in ingredient_formset %}
+                <tr>
+                  {{ form.id }}
+                  <td>
+                    <label for="{{ form.ingredient_name.id_for_label }}" class="visually-hidden">{% trans "Ingrediente" %}</label>
+                    {{ form.ingredient_name }}
+                    {{ form.ingredient }} {# hidden, sin label ni aria #}
+                    {% if form.ingredient_name.errors %}
+                      <div class="error" role="alert" aria-live="assertive">{{ form.ingredient_name.errors.0 }}</div>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <label for="{{ form.quantity.id_for_label }}" class="visually-hidden">{% trans "Cantidad" %}</label>
+                    {{ form.quantity }}
+                  </td>
+                  <td>
+                    <label for="{{ form.unit.id_for_label }}" class="visually-hidden">{% trans "Unidad" %}</label>
+                    {{ form.unit }}
+                  </td>
+                  <td>
+                    {% if form.instance.id %}
+                      {{ form.DELETE }}
+                      <button type="button" class="btn btn__delete" aria-label="{% trans 'Eliminar ingrediente' %}">{% trans "Eliminar" %}</button>
+                    {% else %}
+                      <button type="button" class="btn btn__yellow" aria-label="{% trans 'Cancelar ingrediente' %}">{% trans "Cancelar" %}</button>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>               
+        <button type="button" id="add-ingredient" class="btn btn__green">{% trans "Añadir ingrediente" %}</button>
+    </fieldset>          
+    
+    <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">
+            {{ form.description.label }}
+            <span class="help-icon" data-help="{% trans 'Consejos' %}:
+                - {% trans 'Empezar con subtítulo, marcando &quot;Heading 3&quot;' %}
+                - {% trans 'No usar líneas vacías' %}
+                - {% trans 'Usar las etiquetas del editor' %}
+                ">?
+            </span>
+        </label>
+        <div class="form-group__quill">                    
+            <div id="quill-description" class="ql-editor"  aria-label="{% trans 'Descripción de la receta' %}"></div>
+            
+            <textarea name="description" id="id_description" hidden aria-hidden="true">{{ form.description.value|default_if_none:''|safe }}</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="{{ form.instructions.id_for_label }}">
+            {{ form.instructions.label }}
+            <span class="help-icon" data-help="{% trans 'Consejos' %}:
+                - {% trans 'Para pasos usar lista enumerada' %}
+                - {% trans 'No usar líneas vacías' %}
+                - {% trans 'Usar las etiquetas del editor' %}
+                - {% trans 'Imagen' %}: webp, 300-800px
+                - Video: mp4, webm, max 10MB">?
+            </span>
+        </label>
+        {% if form.instructions.help_text %}
+            <p class="help-text">{{ form.instructions.help_text|safe }}</p>
+        {% endif %}
+        <div class="form-group__quill">                   
+            <div id="quill-instructions" class="ql-editor" aria-label="{% trans 'Instrucciones de la receta' %}"></div>
+             
+            <textarea name="instructions" id="id_instructions" hidden aria-hidden="true">{{ form.instructions.value|default_if_none:''|safe }}</textarea>          
+        </div>
+    </div>         
+    <div class="form-group">
+        <label for="{{ form.tips.id_for_label }}">
+            {{ form.tips.label }}
+            <span class="help-icon" data-help="{% trans 'Consejos' %}:
+                - {% trans 'Usar lista con puntos' %}
+                - {% trans 'No usar líneas vacías' %}
+                - {% trans 'Usar las etiquetas del editor' %}
+                ">?
+            </span>
+        </label>
+        <div class="form-group__quill">                    
+            <div id="quill-tips" class="ql-editor" aria-label="{% trans 'Consejos adicionales' %}"></div>        
+            <textarea name="tips" id="id_tips" hidden aria-hidden="true">{{ form.tips.value|default_if_none:''|safe }}</textarea> 
+        </div>            
+    </div>    
+    <button class="btn btn__recipe" type="submit" aria-label="{% if form.instance.pk %}{% trans 'Actualizar receta' %}{% else %}{% trans 'Guardar receta' %}{% endif %}">
+        {% if form.instance.pk %}
+            {% trans "Actualizar receta" %}
+        {% else %}
+            {% trans "Guardar receta" %}
+        {% endif %}
+    </button>      
+</form>
+
+<!-- Modal Video -->
+<div id="videoModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans 'Insertar video' %}</h2>
+        <label>
+            {% trans 'URL del video:' %}
+            <input type="text" id="videoUrlInput" placeholder="https://...">
+        </label>
+        <p>{%trans 'O sube un archivo:' %}</p>
+        <input type="file" id="videoFileInput" accept="video/mp4,video/webm">
+        <div  class="modal-buttons">
+            <button id="videoConfirmBtn" class="btn btn__confirm">{% trans 'Insertar' %}</button>
+            <button type="button" onclick="toggleModal('videoModal','close')" class="btn btn__yellow">{% trans 'Cancelar' %}</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Link -->
+<div id="linkModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Insertar enlace" %}</h2>
+        <form id="linkForm">
+            <label for="linkUrl">{% trans "URL del enlace" %}</label>
+            <input type="url" id="linkUrl" name="linkUrl" placeholder="https://..." required>
+
+            <div class="modal-buttons">
+                <button id="linkConfirmBtn" type="submit" class="btn btn__confirm">{% trans "Insertar" %}</button>
+                <button type="button" onclick="toggleModal('linkModal','close')" class="btn btn__yellow">{% trans "Cancelar" %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Textos para JS -->
+<div id="formMessages" 
+    data-desc-empty=" {% trans 'La descripción no puede estar vacía.' %}"
+    data-instr-empty=" {% trans 'La descripción no puede estar vacía.' %}">
+</div>
+<div id="videoMessages"
+    data-no-text="{% trans 'Selecciona el texto primero' %}"
+    data-url-invalid="{% trans '⚠️ URL no válida. Introduce un enlace correcto (YouTube, Vimeo o similar).' %}"
+    data-empty-input="{% trans '⚠️ Debes introducir una URL o subir un archivo.' %}">
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('{{ form.photo.id_for_label }}');
+        const preview = document.getElementById('current-image');
+    
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    preview.src = ev.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '';
+                preview.style.display = 'none';
+            }
+        });  
+    });      
+</script>
+<script src="{% static "js/helpers/custom-scrollbar.min.js" %}"></script>

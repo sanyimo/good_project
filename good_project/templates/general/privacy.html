@@ -1,0 +1,101 @@
+{% extends 'general/layout.html' %}
+{% load i18n %}
+
+{% block head_title %}{% trans 'Política de Privacidad' %}{% endblock %}
+{% block page_title %}{% trans 'Política de Privacidad' %}{% endblock %}
+
+{% block content %}
+<p class="legal__notice">
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      Esta página está disponible solo en español por el momento.
+    {% elif LANGUAGE_CODE == 'en' %}
+      This page is only available in Spanish for now.
+    {% elif LANGUAGE_CODE == 'it' %}
+      Questa pagina è disponibile solo in spagnolo per ora.
+    {% elif LANGUAGE_CODE == 'ca' %}
+      Aquesta pàgina només està disponible en espanyol de moment.
+    {% elif LANGUAGE_CODE == 'hu' %}
+      Ez az oldal jelenleg csak spanyol nyelven érhető el.
+    {% elif LANGUAGE_CODE == 'pt' %}
+      Esta página está disponível apenas em espanhol por enquanto.
+    {% else %}
+      Esta página está disponible solo en español por el momento.
+    {% endif %}
+</p>
+<section class="legal">  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">1. Responsable del tratamiento</h3>
+        <p class="legal__text">
+            En cumplimiento del Reglamento (UE) 2016/679 (RGPD) y la Ley Orgánica 3/2018 (LOPDGDD), se informa que los datos personales recogidos a través de este sitio web serán tratados por:
+        </p>
+        <ul class="legal__list">
+            <li><strong>Responsable:</strong> [Nombre del responsable o razón social]</li>
+            <li><strong>NIF/CIF:</strong> [Número de identificación]</li>
+            <li><strong>Dirección:</strong> [Dirección completa]</li>
+            <li><strong>Correo electrónico:</strong> [Email de contacto]</li>
+        </ul>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">2. Finalidad del tratamiento</h3>
+        <p class="legal__text">
+            Los datos facilitados por los usuarios a través del formulario de contacto o correo electrónico serán utilizados únicamente para:
+        </p>
+        <ul class="legal__list">
+            <li>Atender consultas o solicitudes enviadas.</li>
+            <li>Gestionar la comunicación con el usuario.</li>
+            <li>Mejorar la experiencia en la web (cookies técnicas y de análisis).</li>
+        </ul>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">3. Conservación de datos</h3>
+        <p class="legal__text">
+            Los datos personales se conservarán únicamente durante el tiempo necesario para cumplir con la finalidad para la que se recabaron o mientras exista una obligación legal.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">4. Legitimación</h3>
+        <p class="legal__text">
+            La base legal para el tratamiento de tus datos es tu consentimiento expreso, que otorgas al marcar la casilla correspondiente y enviarnos el formulario o email.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">5. Destinatarios</h3>
+        <p class="legal__text">
+            No se cederán datos a terceros, salvo obligación legal. Tampoco se realizarán transferencias internacionales de datos.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">6. Derechos del usuario</h3>
+        <p class="legal__text">
+            Tienes derecho a acceder, rectificar, suprimir, limitar u oponerte al tratamiento de tus datos, así como a la portabilidad de los mismos. Puedes ejercer estos derechos enviando una solicitud a:
+        </p>
+        <ul class="legal__list">
+            <li><strong>Email:</strong> [Email de contacto]</li>
+            <li><strong>Asunto:</strong> Ejercicio de derechos RGPD</li>
+        </ul>
+        <p class="legal__text">
+            Si no estás satisfecho con el tratamiento de tus datos, puedes presentar una reclamación ante la <a href="https://www.aepd.es/" target="_blank" rel="noopener noreferrer" class="legal__link">Agencia Española de Protección de Datos (AEPD)</a>.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">7. Seguridad</h3>
+        <p class="legal__text">
+            Este sitio aplica las medidas técnicas y organizativas necesarias para garantizar la seguridad e integridad de los datos personales tratados, así como para evitar su pérdida, alteración o acceso no autorizado.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">8. Modificaciones</h3>
+        <p class="legal__text">
+            El responsable del tratamiento se reserva el derecho a modificar esta política para adaptarla a novedades legislativas o jurisprudenciales. Las modificaciones serán publicadas en esta misma página.
+        </p>
+    </div>
+</section>  
+{% endblock %}

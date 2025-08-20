@@ -1,0 +1,65 @@
+{% extends "general/layout.html" %}
+{% load i18n %}
+
+{% block head_title %}{% trans 'Contacto' %}{% endblock %}
+{% block page_title %}{% trans 'Contacta con nosotros'%}{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="message {{ message.tags }}">
+            {{ message }}
+        </div>        
+    {% endfor %}
+{% endif %}
+
+<form method="post" class="contact-form">
+    {% csrf_token %}
+    
+    <div class="form-field">
+        <label for="id_nombre">{% trans "Nombre" %}</label>
+        <input
+            type="text"
+            name="nombre"
+            id="id_nombre"
+            value="{{ form.nombre.value|default_if_none:'' }}"
+            placeholder="{% trans 'Tu nombre' %}"
+            required
+        >
+        {% if form.nombre.errors %}
+            <div class="form-error">{{ form.nombre.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_email">{% trans "Correo electrónico" %}</label>
+        <input
+            type="email"
+            name="email"
+            id="id_email"
+            value="{{ form.email.value|default_if_none:'' }}"
+            placeholder="{% trans 'Tu email' %}"
+            autocomplete="off"
+            required
+        >
+        {% if form.email.errors %}
+            <div class="form-error">{{ form.email.errors }}</div>
+        {% endif %}
+    </div>
+
+    <div class="form-field">
+        <label for="id_comentario">{% trans "Comentario" %}</label>
+        <textarea
+            name="comentario"
+            id="id_comentario"
+            rows="5"
+            placeholder="{% trans 'Escribe aquí...' %}"
+            required
+        >{{ form.comentario.value|default_if_none:'' }}</textarea>
+        {% if form.comentario.errors %}
+            <div class="form-error">{{ form.comentario.errors }}</div>
+        {% endif %}
+    </div>
+    <button type="submit" class="btn btn__contact">{% trans "Enviar" %}</button>
+</form>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'general/layout.html' %}
+{% load i18n %}
+
+{% block head_title %}{% trans 'Aviso legal' %}{% endblock %}
+{% block page_title %}{% trans 'Aviso legal' %}{% endblock %}
+
+{% block content %}
+<p class="legal__notice">
+    {% get_current_language as LANGUAGE_CODE %}
+    {% if LANGUAGE_CODE == 'es' %}
+      Esta página está disponible solo en español por el momento.
+    {% elif LANGUAGE_CODE == 'en' %}
+      This page is only available in Spanish for now.
+    {% elif LANGUAGE_CODE == 'it' %}
+      Questa pagina è disponibile solo in spagnolo per ora.
+    {% elif LANGUAGE_CODE == 'ca' %}
+      Aquesta pàgina només està disponible en espanyol de moment.
+    {% elif LANGUAGE_CODE == 'hu' %}
+      Ez az oldal jelenleg csak spanyol nyelven érhető el.
+    {% elif LANGUAGE_CODE == 'pt' %}
+      Esta página está disponível apenas em espanhol por enquanto.
+    {% else %}
+      Esta página está disponible solo en español por el momento.
+    {% endif %}
+</p>
+<section class="legal">  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">1. Datos del titular</h3>
+        <p class="legal__text">
+            En cumplimiento con el deber de información recogido en la Ley 34/2002, de 11 de julio,
+            de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE),
+            se facilitan a continuación los datos generales de este sitio web:
+        </p>
+        <ul class="legal__list">
+            <li><strong>Titular:</strong> [Nombre o razón social]</li>
+            <li><strong>NIF/CIF:</strong> [Número de identificación fiscal]</li>
+            <li><strong>Domicilio:</strong> [Dirección completa]</li>
+            <li><strong>Correo electrónico:</strong> [email de contacto]</li>
+            <li><strong>Teléfono:</strong> [número de contacto, opcional]</li>
+        </ul>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">2. Objeto</h3>
+        <p class="legal__text">
+            El presente Aviso Legal regula el acceso, navegación y uso del sitio web
+            <strong>[www.tudominio.com]</strong>, así como las responsabilidades derivadas de su uso.
+        </p>
+        <p class="legal__text">
+            El titular se reserva el derecho de modificar en cualquier momento la presentación, configuración
+            y contenido del Sitio Web, así como este Aviso Legal.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">3. Condiciones de uso</h3>
+        <p class="legal__text">
+            El acceso al Sitio Web es gratuito, salvo en lo relativo al coste de conexión a través de
+            la red de telecomunicaciones suministrada por el proveedor de acceso contratado por el usuario.
+        </p>
+        <p class="legal__text">
+            El usuario se compromete a utilizar el Sitio Web de conformidad con la ley, este Aviso Legal,
+            la moral, las buenas costumbres y el orden público. Queda prohibido el uso con fines lesivos.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">4. Propiedad intelectual e industrial</h3>
+        <p class="legal__text">
+            Todos los contenidos del Sitio Web son propiedad del titular o cuenta con licencias necesarias.
+            Queda prohibida su reproducción, distribución, transformación o explotación no autorizada.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">5. Responsabilidad</h3>
+        <p class="legal__text">
+            El titular no se hace responsable del mal uso por parte del usuario ni garantiza
+            la disponibilidad continua del sitio o la ausencia de errores.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">6. Enlaces a terceros</h3>
+        <p class="legal__text">
+            Este sitio puede contener enlaces a terceros. El titular no se hace responsable de sus contenidos ni políticas.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">7. Protección de datos</h3>
+        <p class="legal__text">
+            El tratamiento de datos personales se rige por lo dispuesto en nuestra
+            <a href="/privacidad" class="legal__link">Política de Privacidad</a>.
+        </p>
+    </div>
+  
+    <div class="legal__section">
+        <h3 class="legal__subtitle">8. Legislación aplicable y jurisdicción</h3>
+        <p class="legal__text">
+            Este Aviso Legal se rige por la legislación española. Las partes se someten a los juzgados
+            y tribunales de <strong>[Ciudad del titular]</strong>, salvo que la ley indique lo contrario.
+        </p>
+    </div>
+</section>
+{% endblock %}

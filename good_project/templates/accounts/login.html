@@ -1,0 +1,72 @@
+{% extends 'general/layout.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans 'Iniciar sesión' %}{% endblock %}
+{% block page_title %}{% trans 'Iniciar sesión' %}{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+    
+        {{ form.non_field_errors }}
+    
+        <label for="id_username">{% trans 'Usuario' %}</label>
+        {{ form.username }}
+    
+        <label for="id_password">{% trans 'Contraseña' %}</label>
+        {{ form.password }}
+    
+        <button type="submit" class=" btn btn__share">{%trans 'Entrar' %}</button>
+    
+        <div class="auth-footer-text">
+            <p>{% trans '¿No tienes cuenta?' %} <a href="{% url 'accounts:register' %}"> {% trans 'Regístrate aquí' %}</a></p>
+            <p>{% trans "¿Has olvidado tu contraseña?" %}</p>
+            <button class="btn btn-primary" id="openPasswordResetModal">{% trans "Restablecer contraseña" %}</button>              
+        </div>
+    </form>
+</div>
+
+<div id="passwordResetModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Restablecer contraseña" %}</h2>
+        <form method="post" action="{% url 'accounts:password_reset' %}">
+            {% csrf_token %}
+            {{ password_reset_form.email.label_tag }}
+            {{ password_reset_form.email }}
+    
+            <div class="modal-buttons">
+                <button type="submit" class="btn btn__confirm">{% trans "Enviar enlace" %}</button>
+                <button type="button" id="closePasswordResetModal" class="btn btn__yellow">{% trans "Cancelar" %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const openReset = document.getElementById('openPasswordResetModal');
+        const closeReset = document.getElementById('closePasswordResetModal');
+        const resetModal = document.getElementById('passwordResetModal');
+    
+        if (openReset && closeReset && resetModal) {
+            openReset.addEventListener('click', (e) => {
+                e.preventDefault();
+                resetModal.classList.add('active');
+            });
+    
+            closeReset.addEventListener('click', (e) => {
+                e.preventDefault();
+                resetModal.classList.remove('active');
+            });
+    
+            resetModal.addEventListener('click', (e) => {
+                if (e.target === resetModal) {
+                    resetModal.classList.remove('active');
+                }
+            });
+        }
+    });
+</script>      
+{% endblock %}

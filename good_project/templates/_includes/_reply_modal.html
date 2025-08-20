@@ -1,0 +1,21 @@
+{% load i18n %}
+
+<div id="replyModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Deja tu respuesta" %}</h2>
+        {% if user.is_authenticated %}
+            <form method="post" id="replyForm" action="">
+                {% csrf_token %}
+                <textarea class="comment-field" name="content" rows="4" maxlength="300" minlength="10" required
+                        placeholder="{% trans 'Escribe tu respuesta aquí (10-300 caracteres)...' %}"></textarea>
+                <input type="hidden" name="parent_id" id="parent_id_input" value="">
+                <button type="submit" class="btn btn__confirm">{% trans "Enviar respuesta" %}</button>
+                <button type="button" class="btn btn__yellow"  data-close>{% trans "Cancelar" %}</button>
+            </form>
+        {% else %}
+            <p>{% trans "Debes iniciar sesión para responder." %}</p>
+            <a href="{% url 'accounts:login' %}" class="btn btn__confirm">{% trans "Iniciar sesión" %}</a>
+            <button type="button" class="btn btn__yellow"  data-close>{% trans "Cerrar" %}</button>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,39 @@
+{% extends "general/layout.html" %}
+{% load i18n %}
+
+{% block head_title %}{{ category.name }}{% endblock %}
+
+
+{% block content %}
+<button type="button" class="btn btn__back" onclick="window.history.back()">
+    ←{% trans "Volver" %}
+</button>
+  
+<section class="category-recipes scroll-reveal">
+    {% if intro %}
+    <section class="category-header">
+        <div class="category-header__image">
+            <img src="{{ category_image_url }}" alt="{{ category.name }}">
+        </div>
+        <div class="category-header__info">
+            <h1 class="category-header__title">{{ category.name }}</h1>
+            <p class="category-header__intro">{{ intro }}</p>
+        </div>
+    </section>
+    {% endif %}
+    
+    <div class="container">
+        <div class="recipes-grid">
+            {% for recipe in recipes %}
+                <div class="recipe-card">
+                    <img src="{{ recipe.photo.url }}" alt="{{ recipe }}">
+                    <h3>{{ recipe.title }}</h3>
+                    <a href="{% url 'recipes:recipe_detail' recipe.slug %}">{% trans "Ver receta" %}</a>
+                </div>
+            {% empty %}
+                <p>{% trans "No hay recetas en esta categoría todavía." %}</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

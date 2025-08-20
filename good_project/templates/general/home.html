@@ -1,0 +1,319 @@
+{% extends "general/layout.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block meta_description %}{% trans "Recetas deliciosas y saludables en múltiples idiomas." %}{% endblock %}
+{% block meta_keywords %}{% trans "recetas, cocina casera, saludable, postres, carnes, sopas" %}{% endblock %}
+
+{% block extra_head %}
+<link rel="preload" href="{% static 'img/ice-cream.svg' %}" as="image" type="image/svg+xml">
+{% endblock %}
+
+{% block head_title %}GOO:D | {% trans 'Homepage' %}{% endblock %}
+{% block page_title %}{% endblock %}
+
+{% block content %}    
+
+<section class="lema"> 
+    <span>{% trans "Comparte" %}</span>
+    <span>{% trans "Disfruta" %}</span>
+    <span>{% trans "Sonríe" %}</span>
+    <span class="emoji">
+        <span class="face face-2">
+            <span class="colon">:</span><span class="letter-d">D</span>
+        </span>    
+        <span class="face face-1">😁</span>
+    </span>
+</section>
+
+<section class="hero">
+    <div class="hero-content">
+        <h2>{% trans "Tu recetario personal. Gratis, simple y delicioso." %}</h2>
+        <p class="intro">{% trans "Guarda tus platos favoritos o encuentra tu próxima inspiración." %}</p>
+        <div class="hero-buttons">
+            <a href="{% url 'accounts:register' %}" class="btn hero-primary">{% trans "Crea tu perfil" %}</a>
+            <a href="{% url 'recipes:recipe_list' %}" class="btn hero-secondary">{% trans "Ver recetas" %}</a>
+        </div>
+    </div>
+</section>      
+
+<section class="ads scroll-reveal">
+    <h2>{% trans "Crea tu perfil gratis" %}</h2>
+    <h3>{% trans "¡Hazlo todo en solo unos clics!" %}</h3>
+    <img src="{% static 'img/free.svg'%} " alt="Imagen caída" class="falling-image" />
+    <ul>
+        <li>{% trans "Personaliza tu perfil" %}</li>
+        <li>{% trans "Sube y comparte tus recetas" %}</li>
+        <li>{% trans "Guarda tus favoritas para tenerlas siempre a mano" %}</li>
+        <li>{% trans "Dale 'Me gusta' a lo que te inspira" %}</li>
+        <li>{% trans "Valora las recetas que pruebas" %}</li>
+        <li>{% trans "Y muchas sorpresas más..." %}</li>
+    </ul>
+    <a href="{% url 'accounts:register' %}">{% trans "Regístrate gratis" %}</a>
+</section>
+
+<section class="search-invite scroll-reveal">
+    <div class="container">
+        <h2>{% trans "¿Buscas inspiración? Encuentra tu próxima receta aquí" %}</h2>
+        <p>{% trans "Usa nuestro buscador avanzado con filtros para descubrir platos deliciosos y personalizados." %}</p>
+        <a class="spatula2" href="{% url 'search' %}">{% trans "Buscar" %}</a>
+    </div>
+</section>     
+
+<section class="categories-section scroll-reveal">
+    <div class="container">
+        <h2>{% trans 'Algunas de nuestras categorías' %}</h2>
+    
+        <div class="categories-grid">
+            {% for category in featured_categories %}
+                <a href="{% url 'recipes:category_detail' category.slug %}" class="category-card">
+                    <img src="{{ category.image_url }}" alt="">
+                    <h3>{{ category.name }}</h3>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>     
+
+<section class="testimonios scroll-reveal">
+    <div class="contenedor">
+        <h2>{% trans "Lo que dice nuestra comunidad" %}</h2>
+        <div class="bloques">
+            <blockquote>
+                <p>{% trans "“He encontrado recetas increíbles y una comunidad muy activa. ¡Me encanta compartir lo que cocino!”" %}</p>
+                <cite>– Laura P.</cite>
+            </blockquote>
+            <blockquote>
+                <p>{% trans "“Gracias a esta web estoy comiendo mejor sin complicarme. ¡Recomendadísima!”" %}</p>
+                <cite>– David M.</cite>
+            </blockquote>
+            <blockquote>
+                <p>{% trans "“Súper útil para inspirarme antes de cocinar. Además, la guardo como recetario personal.”" %}</p>
+                <cite>– Ana C.</cite>
+            </blockquote>
+        </div>
+    </div>
+</section>
+      
+<section class="redes-vivas scroll-reveal">
+    <div class="contenedor">
+        <h2>{% trans "Tu receta puede estar aquí" %}</h2>
+        <p>{% trans "Usa el hashtag" %} <strong>#MiRecetaGOO:D</strong> {% trans "en Instagram o TikTok y comparte tu arte con el mundo." %}</p>
+    
+        <div class="feed">
+            {% for recipe in recipes %}
+                <div class="post" style="--rot: {{ recipe.rotacion }}deg;">
+                    <a href="{{ recipe.get_absolute_url }}">
+                        <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>        
+    </div>
+</section>     
+
+<section class="sorpresa scroll-reveal">
+    <div class="contenedor">
+        <h2>{% trans "¿No sabes qué cocinar?" %}</h2>
+        <p>{% trans "Haz clic y descubre una receta al azar" %}</p>
+        <button id="surpriseBtn" class="btn btn__surprise">{% trans "Sorpréndeme" %}</button>
+    </div>
+</section>   
+
+<section class="moodboard scroll-reveal">         
+    <svg class="guirnalda-svg" viewBox="0 0 800 100" preserveAspectRatio="none" >
+        <defs>
+            <pattern id="cuerdaPattern" width="4" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="10" stroke="#422f1f" stroke-width="6"/>
+            <line x1="5" y1="0" x2="5" y2="10" stroke="#6b5338" stroke-width="1"/>
+            </pattern>
+        </defs>
+        
+        <path id="guirnalda-path" d="M 40 50 C 120 60, 200 40, 280 50 S 440 60, 520 50 S 680 40, 760 50"
+                fill="none" stroke="url(#cuerdaPattern)" stroke-width="4" />
+        
+        <g class="bulbs">
+            <!-- Estas bombillas se colocan en puntos de la línea usando JS -->
+        </g>
+    </svg>
+
+    <div class="collage">
+        <div class="item rot-2 scaleup">🍋 {% trans "Exprime la vida" %}</div>
+        <div class="item rot--3 wobble">🥄 {% trans "Remueve tus ideas" %}</div>
+        <div class="item rot-1">🧄 {% trans "Sazónalo a tu manera" %}</div>
+        <div class="item big scaleup">💡 {% trans "Cocina es creatividad" %}</div>
+        <div class="item rot-5">🌶️ {% trans "Ponle picante a tu día" %}</div>
+        <div class="item rot--4 wobble">🍰 {% trans "Date un gusto" %}</div>
+    </div>
+</section>   
+
+<div id="surpriseModal" class="surprise-modal hidden">
+    <div class="modal-content">
+        <div class="dice">🎲</div>
+        <div class="recipe-preview hidden">
+            <div class="top"></div>
+            <div class="paper">
+                <img id="randomImage" src="" alt="">
+                <h3 id="randomTitle"></h3>
+                <a id="randomLink" href="#" class="btn btn__green">{% trans "Ver receta" %}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if show_avatar_modal %}
+    <div id="avatarModal" class="modal">
+        <div class="modal-content">
+            <h2>{% trans "Elige tu avatar" %}</h2>
+            <form id="avatarForm" method="post" action="{% url 'accounts:set_avatar' %}">
+                {% csrf_token %}
+                <div class="avatar-selection">
+                    {% for filename, name in avatar_choices %}
+                        {% if filename != "default.svg" %}
+                        <label for="avatar_{{ filename|slugify }}" class="avatar-option" title="{% trans "Avatar" %} - {{ name }}">
+                            <input id="avatar_{{ filename|slugify }}" type="radio" name="avatar" value="{{ filename }}" required>
+                            <img src="{% get_media_prefix %}avatars/{{ filename }}" alt="{% trans "Avatar" %} - {{ name }}" width="80" height="80">
+                        </label>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn__green">{% trans "Guardar avatar" %}</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+
+<script src="{% static "js/helpers/fireworks.min.js" %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const avatarForm = document.getElementById('avatarForm');
+        const shouldShowModal = {{ show_avatar_modal|yesno:"true,false" }};
+        if (shouldShowModal) {
+            const avatarModal = document.getElementById('avatarModal');
+            if (avatarModal) {
+                avatarModal.classList.add('active');
+            }
+        }
+        if (avatarForm) {
+            avatarForm.addEventListener('submit', () => {
+                const avatarModal = document.getElementById('avatarModal');
+                if (avatarModal) {
+                    avatarModal.classList.remove('active');
+                }
+            });
+        }          
+
+
+        const section = document.querySelector('.ads');
+        const fallingImage = section.querySelector('.falling-image');
+
+        fallingImage.addEventListener('animationend', () => {
+        section.classList.add('shake');
+
+        // Quitar la clase para poder repetir el efecto si quieres
+        setTimeout(() => {
+            section.classList.remove('shake');
+        }, 600);
+        });
+
+        //garland
+        const path = document.getElementById("guirnalda-path");
+        const bulbGroup = document.querySelector(".bulbs");
+        const numBulbs = 10;
+        const colors = ["color-yellow", "color-red", "color-green", "color-blue"];
+
+        const pathLength = path.getTotalLength();
+
+        for (let i = 0; i < numBulbs; i++) {
+            const percent = i / (numBulbs - 1); // distribuimos uniformemente
+            const point = path.getPointAtLength(pathLength * percent);
+
+            const bulb = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            bulb.setAttribute("class", "bulb on"); // SIEMPRE encendida
+            bulb.setAttribute("cx", point.x);
+            bulb.setAttribute("cy", point.y + 5); // bajamos un poco la bombilla
+            bulb.setAttribute("r", 5);
+
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            bulb.classList.add(color); // asignamos color inicial
+
+            bulbGroup.appendChild(bulb);
+        }
+
+        const bulbs = document.querySelectorAll(".bulb");
+
+        // Cambiar color aleatorio periódicamente, sin apagar
+        function changeBulbColor() {
+            const bulb = bulbs[Math.floor(Math.random() * bulbs.length)];
+            bulb.classList.remove(...colors); // quitar color anterior
+
+            const newColor = colors[Math.floor(Math.random() * colors.length)];
+            bulb.classList.add(newColor); // añadir nuevo color
+
+            const delay = 300 + Math.random() * 600;
+            setTimeout(changeBulbColor, delay);
+        }
+
+        changeBulbColor();
+
+        const btn = document.getElementById("surpriseBtn");
+        const modal = document.getElementById("surpriseModal");
+        const dice = modal.querySelector(".dice");
+        const preview = modal.querySelector(".recipe-preview");
+        const title = document.getElementById("randomTitle");
+        const img = document.getElementById("randomImage");
+        const link = document.getElementById("randomLink");    
+
+        btn.addEventListener("click", () => {
+            modal.classList.add("visible");
+            preview.classList.remove("visible");
+            preview.classList.add("hidden");
+            dice.style.display = "block";
+
+            // Espera un poquito para el efecto
+            setTimeout(() => {
+                fetch("{% url 'recipes:random_recipe_json' %}")
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.error) {
+                            title.textContent = "{% trans 'No hay recetas disponibles' %}";
+                            return;
+                        }
+
+                        img.src = data.image_url;
+                        img.alt = data.title;
+                        title.textContent = data.title;
+                        link.href = data.url;
+
+                        // Stop dice animation
+                        dice.style.display = "none";
+                        preview.classList.remove("hidden"); 
+                        preview.classList.add("visible");
+                        
+                        setTimeout(() =>{
+                            launchMiniFireworks(preview, 100);
+                        }, 200);                         
+                    });
+            }, 1200); // Tiempo de animación de dado
+        });
+
+        // Cierra el modal al hacer click fuera
+        modal.addEventListener("click", e => {
+            if (e.target === modal) {
+                modal.classList.remove("visible");
+        
+                // NO mostrar el dado aquí
+                // dice.style.display = "block"; <- borrar esta línea
+                dice.style.display = "none";
+        
+                // Reset de preview para la próxima vez
+                preview.classList.remove("visible");
+                preview.classList.add("hidden");
+                title.textContent = "";
+                img.src = "";
+                link.href = "#";
+            }
+        });
+    });
+</script>
+{% endblock %}  

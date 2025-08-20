@@ -1,0 +1,225 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block head_title %}Título base{% endblock %}</title>
+<meta name="description" content="{% block meta_description %}Default description here{% endblock %}">
+<meta name="keywords" content="{% block meta_keywords %}recetas, cocina, saludable, internacional{% endblock %}">
+<meta name="author" content="Sandor Benarik" />
+<meta name="robots" content="index, follow" />
+
+<link rel="icon" type="image/png" sizes="192x192" href="{% static 'favicon/android-chrome-192x192.png' %}">
+<link rel="icon" type="image/png" sizes="512x512" href="{% static 'favicon/android-chrome-512x512.png' %}">
+<link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+<link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+<link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+<link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
+<noscript>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous">
+</noscript>
+
+<link rel="stylesheet" href="{% static 'css/main.min.css' %}">
+{% block preload_assets %}{% endblock %}
+{% block extra_head %}{% endblock %}
+
+</head>
+<body>
+    <div id="loading-spinner" role="alert" aria-live="assertive" aria-hidden="true">
+        <div class="spinner-content">
+            <div class="spoon-spinner">
+                <img src="{% static 'img/spoon.svg' %}" alt="Spinner cuchara" />
+            </div>
+            <div id="spinner-message" class="spinner-message"></div>
+        </div>
+    </div>
+
+    {% include '_includes/_header_principal.html' %}
+
+    <h1>{% block page_title %} {% if not hide_page_title %}{% trans "Título por defecto" %}{% endif %}{% endblock %}</h1>
+
+    <main>
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% include '_includes/_footer_principal.html' %}     
+
+    <button id="scrollToTop" class="scroll-top" aria-label="Volver arriba">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+        </svg>
+    </button>  
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll('.scroll-reveal');
+
+            requestAnimationFrame(() => {
+                const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                    }
+                });
+                }, {
+                threshold: 0.1
+                });
+
+                elements.forEach(el => observer.observe(el));
+            });
+
+            // Menú principal
+            const menuTrigger = document.getElementById('menuTrigger');
+            const menuLinks = document.getElementById('menuLinks');
+            const menuItems = menuLinks?.querySelectorAll('li') || [];
+
+            if (menuTrigger && menuLinks) {
+                menuTrigger.addEventListener('click', () => {
+                    menuLinks.classList.toggle('active');
+
+                    if (window.innerWidth >= 768) {
+                        menuItems.forEach((item, i) => {
+                            setTimeout(() => item.classList.toggle('show'), i * 150);
+                        });
+                    } else {
+                        menuItems.forEach((item, i) => {
+                            item.style.setProperty('--i', i);
+                        });
+                    }
+                });
+            }
+
+            // Menú de idiomas
+            const toggleBtn = document.getElementById('toggle-language');
+            const form = document.getElementById('language-form');
+            if (toggleBtn && form) {
+                toggleBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    form.classList.toggle('show');
+                });
+            }
+
+            // Cerrar si se hace click fuera
+            document.addEventListener('click', function (e) {
+                // Si el click no está en el form ni en el botón
+                if (!form.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    form.classList.remove('show');
+                }
+            });
+
+            // También cerrar con touch (para móviles)
+            document.addEventListener('touchstart', function (e) {
+                if (!form.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    form.classList.remove('show');
+                }
+            });
+
+            // Botón "Volver arriba"
+            const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+
+            if (isFinePointer) {
+                const scrollBtn = document.getElementById("scrollToTop");
+                if (scrollBtn) {
+                    function toggleScrollBtn() {
+                        const scrollElement = document.scrollingElement || document.body;
+                        const pageHeight = scrollElement.scrollHeight;
+                        const viewportHeight = window.innerHeight;
+                        const scrolledDown = scrollElement.scrollTop;
+
+                        const shouldShow = pageHeight > viewportHeight + 100 && scrolledDown > 200;
+
+                        if (shouldShow && !scrollBtn.classList.contains("visible")) {
+                            scrollBtn.classList.add("visible", "bounce");
+                            setTimeout(() => {
+                                scrollBtn.classList.remove("bounce");
+                            }, 1000);
+                        } else if (!shouldShow) {
+                            scrollBtn.classList.remove("visible", "bounce");
+                        }
+                    }
+
+                    //resalta comentarios pinchados
+                    const hash = window.location.hash;
+                    if (hash.startsWith("#comment-")) {
+                        const comment = document.querySelector(hash);
+                        if (comment) {
+                            comment.classList.add("highlighted-comment");
+                            // Opcional: quitar clase después para permitir futuros reingresos
+                            setTimeout(() => comment.classList.remove("highlighted-comment"), 2000);
+                        }
+                    }
+                    
+                    window.addEventListener("scroll", toggleScrollBtn);
+                    window.addEventListener("resize", toggleScrollBtn);
+
+                    scrollBtn.addEventListener("click", () => {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                        setTimeout(toggleScrollBtn, 600);
+                    });
+
+                    toggleScrollBtn(); // Ejecutar al cargar
+                }
+            }
+            // Spinner global
+            const spinner = document.getElementById("loading-spinner");
+            const spinnerMessage = document.getElementById("spinner-message");
+            const spinnerMessages = {
+                loading: "{{ _('Cargando...') }}",
+                saving: "{{ _('Traduciendo y guardando, por favor espera...') }}"
+            };
+
+            if (spinner && spinnerMessage) {
+                function showSpinner(messageKey = "loading") {
+                    spinner.classList.add("active");
+                    spinner.setAttribute("aria-hidden", "false");
+                    spinnerMessage.textContent = spinnerMessages[messageKey] || "";
+                    spinnerMessage.classList.add("active");
+                }
+
+                function hideSpinner() {
+                    spinner.classList.remove("active");
+                    spinner.setAttribute("aria-hidden", "true");
+                    spinnerMessage.classList.remove("active");
+                    spinnerMessage.textContent = "";
+                }
+
+                window.showSpinner = showSpinner;
+                window.hideSpinner = hideSpinner;
+
+                window.addEventListener('beforeunload', () => {
+                    showSpinner("loading");
+                });
+            }
+            const messages = document.querySelectorAll('.message');
+
+            messages.forEach((message) => {
+                setTimeout(() => {
+                    message.classList.add('fade-out');
+                }, 4000); // 4 segundos visibles
+            });
+        });  
+    </script>
+
+</body>
+</html>

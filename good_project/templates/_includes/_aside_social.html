@@ -1,0 +1,51 @@
+ {% load i18n %}
+ 
+
+    
+  <aside class="recipes-aside {{ aside_class }}" id="aside">
+   <!-- BOTÓN CREAR NUEVA RECETA -->
+  {% if request.user.is_authenticated %}
+    <a href="{% url 'recipes:recipe_create' %}" class="btn btn__create">
+        {% trans "Crear nueva receta" %}
+    </a>
+  {% endif %}
+  <!-- Botón de apertura -->
+  <button id="openAside" class="open-aside-btn {{ aside_class }}"  aria-label="Abrir menú lateral">
+    <i class='fa-solid fa-cloud'></i>
+  </button>
+     <!-- BOTÓN CREAR NUEVA RECETA -->
+  {% if request.user.is_authenticated %}
+    <div class="aside-content">
+      <a href="{% url 'accounts:profile' %}"><h2>{% trans "Mi espacio" %}</h2></a>
+      <ul>
+      <li><a href="{% url 'accounts:profile' %}#my-recipes">{% trans "Mis recetas" %}</a></li>
+      <li><a href="{% url 'accounts:profile' %}#favorites">{% trans "Favoritas" %}</a></li>
+      <li><a href="{% url 'accounts:profile' %}#comments">{% trans "Mis comentarios" %}</a></li>
+      <li><a href="{% url 'accounts:profile' %}#ratings">{% trans "Mis puntuaciones" %}</a></li>
+      </ul>
+  {% endif %}
+      <section class="follow-us">
+          <h2>{% trans "Síguenos en las redes sociales" %}</h2>
+          <div class="social-icons">
+              <a href="https://facebook.com" class="facebook" target="_blank" rel="noopener" aria-label="Facebook">
+                  <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://instagram.com" class="instagram" target="_blank" rel="noopener" aria-label="Instagram">
+                  <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://x.com" class="twitter" target="_blank" rel="noopener" aria-label="Twitter / X">
+                  <i class="fa-brands fa-x-twitter"></i>
+              </a>
+              <a href="https://pinterest.com" class="pinterest" target="_blank" rel="noopener" aria-label="Pinterest">
+                  <i class="fab fa-pinterest-p"></i>
+              </a>
+              <a href="https://youtube.com" class="youtube" target="_blank" rel="noopener" aria-label="YouTube">
+                  <i class="fab fa-youtube"></i>
+              </a>
+              <a href="mailto:contacto@tusitio.com" class="email" aria-label="Email">
+                  <i class="fas fa-envelope"></i>
+              </a>
+          </div>
+      </section>
+    </div>
+  </aside>

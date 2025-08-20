@@ -1,0 +1,591 @@
+{% extends 'general/layout.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block head_title %}{{ title }}{% endblock %}
+{% block page_title %}<h1 class="detail-title">{{ title }}</h1>{% endblock %}
+
+{% block extra_head %}
+<link rel="preload" as="image" href="{{ image.url }}">
+{% endblock %}
+
+{% block content %}
+<p><strong>{% trans "Autor" %}:</strong> {{ recipe.author }}</p>
+<a href="{% url 'recipes:recipe_list' %}" class="btn btn__back">← {% trans "Volver a las recetas" %}</a>
+
+<article class="recipe-detail">
+    {% if image %}
+        <div class="photo-wrapper">
+            <picture>
+                <source srcset="{{ image.url }}" type="image/webp">
+                <img src="{{ image.url }}" alt="{{ title }}" class="recipe-photo" width="600" height="400" loading="eager">
+            </picture>
+        </div>
+    {% endif %}
+
+    <div class="rating" aria-label="{% trans 'Puntuación media' %}: {{ average_rating|floatformat:1 }}" title="{% trans 'Puntuación media' %}: {{ average_rating|floatformat:1 }}">
+        {# Pizzas llenas #}
+        {% for _ in full_slices %}
+            <i class="fas fa-pizza-slice full" aria-hidden="true"></i>
+        {% endfor %}
+    
+        {# Pizza media #}
+        {% if half_slice %}
+            <i class="fas fa-pizza-slice half" aria-hidden="true"></i>
+        {% endif %}
+    
+        {# Pizzas vacías #}
+        {% for _ in empty_slices %}
+            <i class="fas fa-pizza-slice" aria-hidden="true"></i>
+        {% endfor %}
+    
+        <span>({{ average_rating|floatformat:1 }})</span>
+        {% if total_votes > 0 %}
+            <span class="votes">· {{ total_votes }} {% trans "voto" %}{% if total_votes > 1 %}s{% endif %}</span>
+        {% endif %}
+    </div>
+    
+    <section class="actions">
+        <button class="btn btn__share" onclick="toggleModal('shareModal', 'open')">{% trans "Compartir en" %}                
+        </button>
+        
+        <button 
+            class="favorite-toggle
+            {% if is_favorited %}favorited{% endif %}" 
+            data-slug="{{ slug_translated }}" 
+            data-logged-in="{{ request.user.is_authenticated|yesno:'true,false' }}"
+            aria-label="Añadir a favoritas" >
+            <div>
+                <svg class="heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M16.1315 3.71436C14.4172 3.71436 12.9029 4.57721 12 5.8915C11.0972 4.57721 9.58289 3.71436 7.86861 3.71436C5.10289 3.71436 2.85718 5.96007 2.85718 8.72578C2.85718 14.8344 12 20.3258 12 20.3258C12 20.3258 21.1429 14.8344 21.1429 8.72578C21.1429 5.96007 18.8972 3.71436 16.1315 3.71436Z" fill="url(#paint0_radial)"></path> <path opacity="0.5" d="M18.2056 4.16016C20.9485 8.53158 18.4228 14.2687 15.3885 15.8973C12.0399 17.6973 9.74847 16.8516 5.00562 14.1602C7.70847 17.743 11.9999 20.3202 11.9999 20.3202C11.9999 20.3202 21.1428 14.8287 21.1428 8.72016C21.1428 6.6973 19.937 4.94873 18.2056 4.16016Z" fill="url(#paint1_radial)"></path> <path opacity="0.5" d="M16.1315 3.71436C14.4172 3.71436 12.9029 4.57721 12 5.8915C11.0972 4.57721 9.58289 3.71436 7.86861 3.71436C5.10289 3.71436 2.85718 5.96007 2.85718 8.72578C2.85718 14.8344 12 20.3258 12 20.3258C12 20.3258 21.1429 14.8344 21.1429 8.72578C21.1429 5.96007 18.8972 3.71436 16.1315 3.71436Z" fill="url(#paint2_radial)"></path> <path opacity="0.5" d="M16.1315 3.71436C14.4172 3.71436 12.9029 4.57721 12 5.8915C11.0972 4.57721 9.58289 3.71436 7.86861 3.71436C5.10289 3.71436 2.85718 5.96007 2.85718 8.72578C2.85718 14.8344 12 20.3258 12 20.3258C12 20.3258 21.1429 14.8344 21.1429 8.72578C21.1429 5.96007 18.8972 3.71436 16.1315 3.71436Z" fill="url(#paint3_radial)"></path> <path opacity="0.24" d="M10.7486 5.74883C11.2514 6.93169 10.1371 8.5374 8.25714 9.33169C6.37714 10.126 4.45143 9.8174 3.94857 8.64026C3.44571 7.46312 4.56 5.85169 6.44 5.0574C8.32 4.26312 10.2457 4.56597 10.7486 5.74883Z" fill="url(#paint4_radial)"></path> <path opacity="0.24" d="M16.8742 4.78885C17.5885 5.57742 17.1485 7.13742 15.8971 8.26885C14.6456 9.40028 13.0513 9.68028 12.3371 8.8917C11.6228 8.10313 12.0628 6.54313 13.3142 5.41171C14.5656 4.28028 16.1599 4.00028 16.8742 4.78885Z" fill="url(#paint5_radial)"></path> <path opacity="0.32" d="M16.2229 5.04578C18.7372 5.90293 21.1372 9.61721 17.0801 14.2458C14.6515 17.0172 12.0001 18.4172 8.62866 17.8686C10.4515 19.3886 12.0058 20.3258 12.0058 20.3258C12.0058 20.3258 21.1487 14.8344 21.1487 8.72578C21.1429 5.96007 18.8972 3.71436 16.1315 3.71436C14.4172 3.71436 12.9029 4.57721 12.0001 5.8915C12.0001 5.8915 14.3829 4.41721 16.2229 5.04578Z" fill="url(#paint6_linear)"></path> <defs> <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.38479 8.34769) rotate(-29.408) scale(14.3064 11.3486)"> <stop offset="0.2479" stop-color="#FF0000"></stop> <stop offset="0.8639" stop-color="#C20000"></stop> </radialGradient> <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.7385 7.47018) rotate(-29.408) scale(12.3173 9.77078)"> <stop offset="0.2479" stop-color="#FF0000"></stop> <stop offset="1" stop-color="#C20000"></stop> </radialGradient> <radialGradient id="paint2_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(9.38479 8.34769) rotate(-29.408) scale(14.3064 11.3486)"> <stop stop-color="white" stop-opacity="0.25"></stop> <stop offset="1" stop-color="white" stop-opacity="0"></stop> </radialGradient> <radialGradient id="paint3_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(14.5277 13.2044) rotate(-26.296) scale(10.4431 5.16038)"> <stop stop-color="#BD2719" stop-opacity="0.25"></stop> <stop offset="1" stop-color="#BD2719" stop-opacity="0"></stop> </radialGradient> <radialGradient id="paint4_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(7.34746 7.19453) rotate(-21.6908) scale(3.71252 2.30616)"> <stop stop-color="white"></stop> <stop offset="1" stop-color="white" stop-opacity="0"></stop> </radialGradient> <radialGradient id="paint5_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(14.6004 6.84619) rotate(-40.7634) scale(3.07376 1.9095)"> <stop stop-color="white"></stop> <stop offset="1" stop-color="white" stop-opacity="0"></stop> </radialGradient> <linearGradient id="paint6_linear" x1="13.8868" y1="26.8498" x2="15.6583" y2="2.96408" gradientUnits="userSpaceOnUse"> <stop stop-color="#860805"></stop> <stop offset="1" stop-color="#BD2719" stop-opacity="0"></stop> </linearGradient> </defs> </g></svg>
+            </div>
+            <div class="jar-wrapper">
+                <div class="shadow-ground"></div>
+                <svg
+                    class="jar-svg"
+                    width="80"
+                    height="80"
+                    viewBox="0 10 80 100"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-label="Favorite Jar"
+                    role="img"
+                >
+                <defs>
+                    <!-- Degradado para el cuerpo, más contraste y volumen -->
+                    <radialGradient id="gradBody" cx="0.4" cy="0.3" r="0.8" fx="0.3" fy="0.3">
+                    <stop offset="0%" stop-color="#fff37b"/>
+                    <stop offset="50%" stop-color="#f2c94c"/>
+                    <stop offset="90%" stop-color="#b38600"/>
+                    <stop offset="100%" stop-color="#8c5e00"/>
+                    </radialGradient>
+
+                    <!-- Degradado para la tapa, más contraste -->
+                    <radialGradient id="gradLid" cx="0.5" cy="0.4" r="0.7" fx="0.6" fy="0.4">
+                    <stop offset="0%" stop-color="#fffba1"/>
+                    <stop offset="50%" stop-color="#ffdd57"/>
+                    <stop offset="90%" stop-color="#b38600"/>
+                    <stop offset="100%" stop-color="#7d5400"/>
+                    </radialGradient>
+
+                    <!-- Combinar sombras para el cuerpo -->
+                    <filter id="combinedShadowBody" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#b38600" flood-opacity="0.6"/>
+                    <feComponentTransfer in="SourceAlpha" result="alpha">
+                        <feFuncA type="table" tableValues="1 0"/>
+                    </feComponentTransfer>
+                    <feGaussianBlur in="alpha" stdDeviation="3" result="blur"/>
+                    <feComposite in="blur" in2="alpha" operator="arithmetic" k2="-1" k3="1" result="innerShadow"/>
+                    <feFlood flood-color="#5c4200" flood-opacity="0.4"/>
+                    <feComposite in2="innerShadow" operator="in"/>
+                    <feComposite in="SourceGraphic"/>
+                    </filter>
+
+                    <!-- Sombra externa para la tapa -->
+                    <filter id="shadowLid" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#8c6600" flood-opacity="0.7"/>
+                    </filter>
+
+                    <!-- Sombra de suelo -->
+                    <filter id="shadowFloor" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#000000" flood-opacity="0.15"/>
+                    </filter>
+                </defs>
+
+                <!-- Sombra de suelo: elipse difusa debajo del tarro -->
+                <ellipse
+                    cx="40"
+                    cy="95"
+                    rx="30"
+                    ry="8"
+                    fill="#000"
+                    filter="url(#shadowFloor)"
+                    opacity="0.15"
+                />
+
+                <!-- Tarro -->
+                <path
+                    d="
+                    M 18 30
+                    Q 2 75, 18 95
+                    L 62 95
+                    Q 78 75, 62 30 
+                    Z
+                    "
+                    class="body"
+                    fill="url(#gradBody)"
+                    stroke="#b38600"
+                    stroke-width="1"
+                    filter="url(#combinedShadowBody)"
+                />
+
+                <!-- Líneas decorativas (cute) -->
+                <circle cx="40" cy="60" r="6" fill="#fff9c4" opacity="0.7" />
+                <circle cx="55" cy="80" r="4" fill="#fff9c4" opacity="0.7" />
+                <circle cx="30" cy="80" r="3" fill="#fff9c4" opacity="0.7" />
+
+                <!-- Tapa -->
+                <rect
+                    class="lid"
+                    fill="url(#gradLid)"
+                    x="10"
+                    y="14"
+                    width="60"
+                    height="15"
+                    rx="8"
+                    ry="8"
+                    stroke="#b38600"
+                    stroke-width="1"
+                    filter="url(#shadowLid)"
+                    style="transform-origin: 15px 30px;"
+                />
+                </svg>
+            </divv>
+            
+        </button>
+        
+        <button class="btn btn__rate">{% trans "Valorar receta" %}</button>
+    </section> 
+    <div id="favorite-text" class="favorite-text" {% if is_favorited %}style="display:none;"{% endif %}>
+        {% blocktrans %}Guardar esta receta en <strong>Favoritas</strong>{% endblocktrans %}
+    </div>
+    <section class="meta">   
+        <div>
+            {% if recipe.themes.exists %}
+                <p><strong>{% trans "Temáticas" %}:</strong>
+                {{ recipe.themes.all|join:", " }}
+                </p>
+            {% endif %}
+
+            {% if recipe.cuisine_type %}
+                <p><strong>{% trans "Cocina" %}:</strong> {{ recipe.cuisine_type.name }}</p>
+            {% endif %}
+
+            {% if recipe.category %}
+                <p><strong>{% trans "Categoría" %}:</strong>
+                <a class="cat_link" href="{% url 'recipes:category_detail' recipe.category.slug %}">
+                    {{ recipe.category.name }}
+                </a> 
+                </p>
+            {% endif %}
+        </div>
+        
+        <div>
+            <p><strong>{% trans "Preparación" %}:</strong> {{ recipe.prep_time }} {% trans "min" %}</p>
+            <p><strong>{% trans "Cocción" %}:</strong> {{ recipe.cook_time  }} {% trans "min" %}</p>
+            <p><strong>{% trans "Tiempo total" %}:</strong> {{ recipe.total_time }} {% trans "min" %}</p>
+        </div>
+
+        <div>
+            <p><strong>{% trans "Dificultad" %}:</strong> {{ recipe.get_difficulty_display }}</p>
+            {% if recipe.cooking_methods.exists %}
+                <p><strong>{% trans "Métodos de cocción" %}:</strong>
+                {{ recipe.cooking_methods.all|join:", " }}
+                </p>
+            {% endif %}
+            {% if recipe.meal_types.exists %}
+                <p><strong>{% trans "Tipo de comida" %}:</strong>
+                {{ recipe.meal_types.all|join:", " }}
+                </p>
+            {% endif %}
+        </div>
+        
+        <div>
+            {% if recipe.allergens.exists %}
+                <p><strong>{% trans "Alérgenos" %}:</strong>
+                {{ recipe.allergens.all|join:", " }}
+                </p>
+            {% endif %}
+
+            {% if recipe.tags.exists %}
+                <p><strong>{% trans "Etiquetas" %}:</strong>
+                {% for tag in recipe.tags.all %}
+                    <span class="tag">{{ tag.name }}</span>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+                </p>
+            {% endif %}
+            <p><strong>{% trans "Porciones" %}:</strong> {{ recipe.servings }}</p>
+        </div>        
+    </section>
+
+    <section class="description">
+        <h2>👀 {% trans "Descripción" %}</h2>
+        {{ description|safe }}
+    </section>
+
+    <section class="ingredients-wrap" >
+        <h2>📋 {% trans "Ingredientes" %}</h2>
+        <div class="ingredients">
+            <ul>
+                {% for ingredient in ingredients %}
+                <li>
+                    {{ ingredient.quantity }} {{ ingredient.unit }} - {{ ingredient.ingredient_name }}
+                </li>
+                {% empty %}
+                <li>{% trans "No hay ingredientes disponibles." %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <section class="instructions">
+        <h2> ⚗ {% trans "Instrucciones" %}</h2>
+        <h3> {% trans "Elaboración paso a paso" %}</h3>
+        {{ instructions|safe }}
+    </section>
+
+    {% if tips %}
+        <section class="tips">
+        <span class="screw top-left"></span>
+        <span class="screw top-right"></span>
+        <span class="screw bottom-left"></span>
+        <span class="screw bottom-right"></span>
+
+        <h2><span>🪄</span> {% trans "Consejos" %}</h2>
+        {{ tips|safe }}
+        </section>
+    {% endif %}
+
+    <section class="timestamps">
+        <small>{% trans "Creado el" %}: {{ recipe.created_at|date:"d M Y" }}</small><br>
+        <small>{% trans "Actualizado el" %}: {{ recipe.updated_at|date:"d M Y" }}</small>
+    </section>
+
+    {% if request.user.is_authenticated and request.user == recipe.author %}
+        <section class="owner-actions">
+            <a href="{% url 'recipes:recipe_update' slug=slug_translated %}" class="btn btn__green">{% trans "Editar receta" %}</a>
+            <button type="submit" class="btn btn__delete" onclick="toggleModal('deleteModal', 'open')">
+                {% trans "Eliminar receta" %}
+            </button>
+        </section>
+    {% endif %}
+</article>
+
+{% if recommended_recipes %}
+<section class="recipe-recommendations">
+    <h2>👀 {% trans "También podría interesarte..." %}</h2>
+    <ul class="recommended-list">
+        {% for rec in recommended_recipes %}
+            <li>
+                <a href="{% url 'recipes:recipe_detail' rec.slug %}" class="recommended-card">
+                    {% if rec.photo %}
+                        <img src="{{ rec.photo.url }}" alt="{{ rec.title }}" class="thumb" loading="lazy"
+                        >
+                    {% endif %}
+                    <div class="info">
+                        <h3>{{ rec.title }}</h3>
+                        <p>{% trans "Por" %} {{ rec.author }}</p>
+                        {% if rec.average_rating %}
+                            <p><i class="fas fa-pizza-slice full"></i> {{ rec.average_rating|floatformat:1 }}</p>
+                        {% endif %}
+                    </div>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+<section class="recipe-comments">
+    <div class="comment-header">
+        <h3>{% trans "Comentarios" %}</h3>
+        <button onclick="toggleModal('commentModal', 'open')" class="btn btn__comment">
+        <i class="fas fa-comment-dots"></i> {% trans "Comentar receta" %}
+        </button>
+    </div>  
+
+    {% if comments %}
+        <ul class="comments-list">
+        {% for comment in comments %}
+            <li id="comment-{{ comment.id }}" class="comment-item">
+                
+                <div class="user-data">
+                    <img class="user-avatar" src="{{ comment.user.get_avatar_url }}" alt="{{ comment.user.username }} avatar" width="20" height="20" />
+                    <strong>{{ comment.user.username }}</strong>
+                    <small>{{ comment.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+                </div>          
+                <div class="comment-message">
+                    <p>{{ comment.content|linebreaks }}</p>
+                    {% if user.is_authenticated %}
+                    <button class="btn btn__comment reply-button"
+                        data-comment-id="{{ comment.id }}"
+                        data-url="{% url 'recipes:add_comment' recipe.slug %}">
+                        {% trans "Responder" %}
+                    </button>
+                    {% endif %}
+                </div>                     
+
+                {% if comment.replies.exists %}
+                    <ul class="replies-list">
+                        {% for reply in comment.replies.all %}
+                            <li id="comment-{{ reply.id }}" class="reply-item">
+                                <div class="reply-message">
+                                    <div class="user-data">
+                                        <img class="user-avatar" src="{{ reply.user.get_avatar_url }}" alt="{{ reply.user.username }} avatar" width="20" height="20" />
+                                        <strong>{{ reply.user.username }}</strong>
+                                        <small>{{ reply.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+                                    </div>
+                                    <p class="comment-body">{{ reply.content|linebreaks }}</p>
+                                </div>
+                                {% if user.is_authenticated %}
+                                    <button class="btn btn__comment reply-button"
+                                            data-comment-id="{{ reply.id }}"
+                                            data-url="{% url 'recipes:add_comment' recipe.slug %}">
+                                        {% trans "Responder" %}
+                                    </button>
+                                {% endif %}                                    
+                            </li>
+                            {% if reply.replies.exists %}
+                                    <ul class="replies-list">
+                                        {% for subreply in reply.replies.all %}
+                                            <li id="comment-{{ subreply.id }}" class="reply-item">
+                                                <div class="reply-message">
+                                                    <div class="user-data">
+                                                        <img class="user-avatar" src="{{ subreply.user.get_avatar_url }}" alt="{{ subreply.user.username }} avatar" width="20" height="20" />
+                                                        <strong>{{ subreply.user.username }}</strong>
+                                                        <small>{{ subreply.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+                                                    </div>
+                                                    <p class="comment-body">{{ subreply.content|linebreaks }}</p>
+                                                </div>                                            
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>{% trans "Aún no hay comentarios para esta receta." %}</p>
+    {% endif %}
+</section>
+
+<div id="ratingModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Valora esta receta" %}</h2>
+        <form method="post" action="{% url 'recipes:rate_recipe' recipe.slug %}">
+            {% csrf_token %}
+            <div class="rating-stars">
+                {% for i in "54321"|make_list %}
+                <input type="radio" id="pizza{{ i }}" name="rating" value="{{ i }}" {% if selected_rating|stringformat:"i" == i %}checked{% endif %}>
+                <label for="pizza{{ i }}"><i class="fas fa-pizza-slice"></i></label>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn__confirm">{% trans "Enviar valoración" %}</button>
+            <button type="button" onclick="closeRatingModal()" class="btn btn__yellow">{% trans "Cancelar" %}</button>
+        </form>
+    </div>
+</div>
+
+<div id="shareModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Compartir receta" %}</h2>
+        <div class="share-options">
+            <a target="_blank" rel="noopener" href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a target="_blank" rel="noopener" href="mailto:?subject={% trans 'Mira esta receta' %}&body={{ request.build_absolute_uri }}">
+                <i class="fas fa-envelope"></i> Email
+            </a>
+            <a target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}">
+                <i class="fab fa-x-twitter"></i> X
+            </a>
+            <button onclick="copyLinkToClipboard()">
+                <i class="fas fa-link"></i> {% trans "Copiar enlace" %}
+            </button>
+        </div>
+        <button onclick="closeShareModal()" class="btn btn__yellow">{% trans "Cerrar" %}</button>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "¿Eliminar receta?" %}</h2>
+        <p>{% trans "Esta acción no se puede deshacer. ¿Estás seguro?" %}</p>
+        <form method="post" action="{% url 'recipes:recipe_delete' slug=slug_translated %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn__confirm">{% trans "Sí, eliminar" %}</button>
+            <button type="button" onclick="closeDeleteModal()" class="btn btn__yellow">{% trans "Cancelar" %}</button>
+        </form>
+    </div>
+</div>
+
+<div id="commentModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Deja tu comentario" %}</h2>
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'recipes:add_comment' slug=slug_translated %}">
+            {% csrf_token %}
+            <textarea class="comment-field" name="content" rows="4" maxlength="300" minlength="10" required placeholder="{% trans 'Escribe tu comentario aquí (10-300 caracteres)...' %}"></textarea>
+            <button type="submit" class="btn btn__confirm">{% trans "Enviar comentario" %}</button>
+            <button type="button" onclick="closeCommentModal()" class="btn btn__yellow">{% trans "Cancelar" %}</button>
+        </form>
+        {% else %}
+            <p>{% trans "Debes iniciar sesión para comentar esta receta." %}</p>
+            <a href="{% url 'accounts:login' %}" class="btn btn__confirm">{% trans "Iniciar sesión" %}</a>
+            <button type="button" onclick="closeCommentModal()" class="btn btn__yellow">{% trans "Cerrar" %}</button>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{% static "js/helpers/reply_modal.min.js" %}"></script>
+
+<script>
+    // Función genérica para abrir/cerrar modales
+    function toggleModal(modalId, action = 'toggle') {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+
+        if (action === 'open') {
+            modal.classList.add('active');
+        } else if (action === 'close') {
+            modal.classList.remove('active');
+        } else if (action === 'toggle') {
+            modal.classList.toggle('active');
+        }
+    }
+
+    // Funciones específicas para cerrar modales (para onclick inline)
+    function closeDeleteModal() {
+        toggleModal('deleteModal', 'close');
+    }
+    function closeShareModal() {
+        toggleModal('shareModal', 'close');
+    }
+    function closeRatingModal() {
+        toggleModal('ratingModal', 'close');
+    }
+    function closeCommentModal() {
+        toggleModal('commentModal', 'close');
+    }
+
+    // Abrir modal de valoración solo si está autenticado
+    function openRatingModal() {
+        {% if request.user.is_authenticated %}
+            toggleModal('ratingModal', 'open');
+        {% else %}
+            alert("{% trans 'Debes iniciar sesión para valorar esta receta.' %}");
+        {% endif %}
+    }
+    // Abrir modal de comentarios  solo si está autenticado
+    function openCommentModal() {
+        {% if request.user.is_authenticated %}
+            toggleModal('commentModal', 'open');
+        {% else %}
+            alert("{% trans 'Debes iniciar sesión para comentar esta receta.' %}");
+        {% endif %}
+    }
+
+    // Copiar enlace al portapapeles
+    function copyLinkToClipboard() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            alert("📋 {% trans '¡Enlace copiado al portapapeles!' %}");
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fade out de mensajes
+        document.querySelectorAll('.messages').forEach(message => {
+            setTimeout(() => message.classList.add('fade-out'), 3000);
+        });
+
+        // Listener botón valorar
+        const rateBtn = document.querySelector('.btn__rate');
+        if (rateBtn) {
+            rateBtn.addEventListener('click', openRatingModal);
+        }
+
+        document.querySelectorAll(".favorite-toggle").forEach(button => {
+            button.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                const loggedIn = this.dataset.loggedIn === "true";
+                if (!loggedIn) {
+                    alert("{% trans 'Debes iniciar sesión para guardar en favoritos.' %}");
+                    return;
+                }
+        
+                const slug = this.dataset.slug;
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const btn = this;
+                const isFavorited = btn.classList.contains("favorited");
+                const favoriteText = document.getElementById("favorite-text");
+                
+                btn.classList.remove("heart-in", "heart-out", "animate-feedback");
+        
+                // Inicia animación correspondiente
+                if (isFavorited) {
+                    btn.classList.remove("favorited");
+                    setTimeout(() => {
+                        btn.classList.add("heart-out");
+                    }, 300);
+                } else {
+                    btn.classList.add("heart-in");
+                    // Cierre de tapa y shake al final del vuelo
+                    setTimeout(() => {
+                        btn.classList.add("favorited", "animate-feedback");
+                    }, 1600);
+                }
+        
+                // Hacemos fetch después de breve retraso visual (permite ver la animación antes del cierre)
+                setTimeout(() => {
+                    fetch("{% url 'recipes:toggle_favorite' %}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "X-CSRFToken": csrfToken,
+                        },
+                        body: new URLSearchParams({ slug: slug })
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === "added") {
+                            btn.classList.add("favorited", "animate-feedback");
+                            if(favoriteText) favoriteText.classList.add('hidden');
+                        } else if (data.status === "removed") {
+                            btn.classList.remove("favorited");
+                            if(favoriteText) favoriteText.classList.remove('hidden');
+                        }
+                    })
+                    .catch(error => console.error("Error:", error))
+                    .finally(() => {
+                        // Limpiar clases después de la animación
+                        setTimeout(() => {
+                            btn.classList.remove("heart-in", "heart-out", "animate-feedback");
+                        }, 1400);
+                    });
+                }, 500);
+            });
+        });        
+    });
+</script>
+{% include "_includes/_reply_modal.html" %}      
+{% include "_includes/_aside_social.html" with aside_class="always-hidden" %}
+<script src="{% static "js/helpers/aside.min.js" %}"></script>
+    
+{% endblock %}

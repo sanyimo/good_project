@@ -1,0 +1,22 @@
+{% load i18n %}
+{% load static %} 
+
+<div id="avatarModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Elige tu avatar" %}</h2>
+        <form id="avatarForm" method="post" action="{% url 'accounts:set_avatar' %}">
+            {% csrf_token %}
+            <div class="avatar-selection">
+                {% for filename, name in avatar_choices %}
+                    {% if filename != "default.svg" %}
+                    <label for="avatar_{{ filename|slugify }}" class="avatar-option" title="{% trans "Avatar" %} - {{ name }}">
+                        <input id="avatar_{{ filename|slugify }}" type="radio" name="avatar" value="{{ filename }}" required>
+                        <img src="{% get_media_prefix %}avatars/{{ filename }}" alt="{% trans "Avatar" %} - {{ name }}" width="80" height="80">
+                    </label>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn__green">{% trans "Guardar avatar" %}</button>
+        </form>
+    </div>
+</div>

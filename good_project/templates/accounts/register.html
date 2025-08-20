@@ -1,0 +1,44 @@
+{% extends 'general/layout.html' %}
+{% load i18n %}
+
+{% block head_title %}{% trans 'Registro' %}{% endblock %}
+{% block page_title %}{% trans 'Registro' %}{% endblock %}
+
+
+{% block content %}
+<section class="auth-container">
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+    
+        <label for="id_username">{% trans 'Nombre de usuario' %}</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+            <div class="field-error">{{ form.username.errors.0 }}</div>
+        {% endif %}
+            
+        <label for="id_email">{% trans 'Correo electrónico' %}</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="field-error">{{ form.email.errors.0 }}</div>
+        {% endif %}
+    
+        <label for="id_password1">{% trans 'Contraseña' %}</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="field-error">{{ form.password1.errors.0 }}</div>
+        {% endif %}
+    
+        <label for="id_password2">{% trans 'Repetir contraseña' %}</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div class="field-error">{{ form.password2.errors.0 }}</div>
+        {% endif %}
+        
+        <button type="submit" class="btn btn__green">{% trans 'Registrarse' %}</button>
+    
+        <div class="auth-footer-text">
+            {% trans '¿Ya tienes cuenta?' %}<a href="{% url 'accounts:login' %}"> {% trans 'Inicia sesión' %}</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

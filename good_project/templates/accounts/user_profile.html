@@ -1,0 +1,384 @@
+{% extends "general/layout.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans "Mi perfil" %}{% endblock %}
+{% block page_title %}{% trans "Mi perfil" %}{% endblock %}
+
+
+{% block content %}
+<div class="dashboard-wrapper">
+        <aside class="profile-tabs">
+            <button data-tab="profile-data" class="active">{% trans "Datos personales" %}</button>
+            <button data-tab="my-recipes">{% trans "Mis recetas" %}</button>
+            <button data-tab="favorites">{% trans "Favoritas" %}</button>
+            <button data-tab="comments">{% trans "Comentarios" %}</button>
+            <button data-tab="ratings">{% trans "Mis puntuaciones" %}</button>
+        </aside>
+    <div class="profile-dashboard">
+        <section class="profile-content">
+            <div class="content-wrapper">    
+                <section class="tab-content active" id="profile-data">
+                    <h2>{% trans "Datos personales" %}</h2>
+                    <form method="post" enctype="multipart/form-data" class="profile-form">
+                        {% csrf_token %}
+                        
+                        <div class="shelf  user-field">
+                            <p>{% trans "Usuario" %}</p>
+                            <span class="dashboard-username">{{ request.user.username }}</span>
+                        </div>
+
+                        <div class="shelf  form-group">
+                            <p for="id_avatar">{% trans "Avatar actual" %}</p>
+                            {% if request.user.avatar %}
+                                <div class="current-avatar">
+                                    <img src="{{ request.user.get_avatar_url }}" alt="{% trans 'Avatar actual' %}{{ request.user.username }} avatar" width="60" height="60" />
+                                </div>
+                            {% endif %}
+                            
+                            <button type="button" class="btn btn__green" id="openAvatarModal">{% trans "Cambiar avatar" %}</button>
+
+                        </div>
+
+                        <div class="shelf  form-group">
+                            <label for="id_email">{% trans "Email" %}</label>
+                            {{ user_form.email }}
+                        
+                            <label for="id_bio">{% trans "Biografía" %}</label>
+                            {{ profile_form.bio }}
+                        </div>
+                                                
+                        <div class="shelf">
+                            <button type="submit" class="btn btn__comment">{% trans "Guardar cambios" %}</button>
+                        </div>
+
+                        <section class="shelf form-btns">
+                            <div class="password-change-section">
+                                <h3>{% trans "Cambiar mi contraseña" %}</h3>
+                                <button class="btn btn__green" id="openPasswordModal">{% trans "Cambiar contraseña" %}</button>
+                                <p>{% trans "Puedes hacerlo en la ventana que saldrá a continuación." %}</p>
+                            </div>
+                            
+                            <div class="delete-account-section">                            
+                                <h3>{% trans "Eliminar cuenta" %}</h3>
+                                
+                                <button type="button" id="btnDeleteProfile" class="btn btn__delete">
+                                    {% trans "Eliminar mi cuenta" %}
+                                </button>
+                                <p>{% trans "Esta acción es irreversible. Tu cuenta será eliminada permanentemente." %}</p>
+                            </div>
+                        </section>
+                    </form>
+                </section>                
+                <section class="tab-content" id="my-recipes">
+                    {% if my_recipes %}
+                        <div class="recipe-grid">
+                            {% for recipe in my_recipes %}
+                                <a href="{% url 'recipes:recipe_detail' recipe.slug %}" class="recipe-card">
+                                    {% if recipe.photo %}
+                                        <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+                                    {% endif %}
+                                    <h3>{{ recipe.title }}</h3>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>{% trans "Aún no has subido ninguna receta." %}</p>
+                    {% endif %}
+                </section>
+                <section class="tab-content" id="favorites">
+                    {% if favorites %}
+                        <div class="recipe-grid">
+                        {% for recipe in favorites %}
+                            <a href="{% url 'recipes:recipe_detail' recipe.slug %}" class="recipe-card">
+                            {% if recipe.photo %}
+                                <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+                            {% endif %}
+                            <h3>{{ recipe.title }}</h3>
+                            <p class="recipe-category">{{ recipe.category.name }}</p>
+                            </a>
+                        {% endfor %}
+                        </div>
+                    {% else %}
+                        <p>{% trans "Aún no tienes recetas favoritas." %}</p>
+                    {% endif %}
+                </section>
+
+                <section class="tab-content" id="comments">
+                    <h2>{% trans "Buzón de actividad" %}</h2>
+
+                    <details open>
+                        <summary>{% trans "Mis comentarios" %}</summary>
+                        <div class="accordion-body">                                
+                            {% if my_comments %}
+                                {% for comment in my_comments %}
+                                    <div class="comment-card">
+                                        <p class="comment-content">“{{ comment.content }}”</p>
+                                        <div class="comment-meta">
+                                            <small>                                    
+                                                {% trans "En" %} <a href="{% url 'recipes:recipe_detail' comment.recipe.slug %}#comment-{{ comment.id }}">{{ comment.recipe.title }}</a>
+                                                · {{ comment.created_at|date:"SHORT_DATE_FORMAT" }}
+                                            </small>
+                                            <button class="btn btn__green reply-button" data-comment-id="{{ comment.id }}"  data-url="{% url 'recipes:add_comment' comment.recipe.slug %}">
+                                                {% trans "Responder" %}
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>{% trans "No has hecho ningún comentario todavía." %}</p>
+                            {% endif %}
+                        </div>
+                    </details>
+                    
+                    <details id="comments">
+                        <summary>{% trans "Respuestas a mis comentarios" %}</summary>
+                        <div class="accordion-body">
+                            {% if has_new_replies %}
+                                <div class="alert alert-info">
+                                    {% trans "¡Tienes nuevas respuestas a tus comentarios!" %}
+                                </div>
+                            {% endif %}
+                    
+                            {% if replies_to_my_comments %}
+                                {% for reply in replies_to_my_comments %}
+                                    <div class="comment-card{% if reply.created_at > user.profile.last_checked_comments %} new-comment{% endif %}">
+                                        <p class="comment-content">“{{ reply.content }}”</p>
+                                        <div class="comment-meta">
+                                            <small>
+                                                <img class="user-avatar" src="{{ reply.user.get_avatar_url }}" alt="{{ reply.user.username }} avatar" width="20" height="20" />
+                                                <span class="username">{{ reply.user }}</span> {% trans "respondió a tu comentario en" %} 
+                                                <a href="{% url 'recipes:recipe_detail' reply.recipe.slug %}#comment-{{ comment.id }}">{{ reply.recipe.title }}</a>
+                                                · {{ reply.created_at|date:"SHORT_DATE_FORMAT" }}
+                                            </small>
+                                            <button class="btn btn__green reply-button" data-comment-id="{{ reply.id }}"  data-url="{% url 'recipes:add_comment' reply.recipe.slug %}">
+                                                {% trans "Responder" %}
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>{% trans "No tienes respuestas a tus comentarios." %}</p>
+                            {% endif %}
+                        </div>
+                    </details>
+                    
+                    <details>
+                        <summary>{% trans "Comentarios en mis recetas" %}</summary>
+                        <div class="accordion-body">
+                            {% if has_new_comments %}
+                                <div class="alert alert-info">
+                                    {% trans "¡Tienes nuevos comentarios en tus recetas!" %}
+                                </div>
+                            {% endif %}
+                    
+                            {% if comments_on_my_recipes %}
+                                {% for comment in comments_on_my_recipes %}
+                                    <div class="comment-card{% if comment.created_at > user.profile.last_checked_comments %} new-comment{% endif %}">
+                                        <p class="comment-content">“{{ comment.content }}”</p>
+                                        <div class="comment-meta">
+                                            <small>
+                                                <img class="user-avatar" src="{{ comment.user.get_avatar_url }}" alt="{{ comment.user.username }} avatar" width="20" height="20" />
+                                                <span class="username">{{ comment.user }}</span> {% trans "comentó en tu receta" %} 
+                                                <a href="{% url 'recipes:recipe_detail' comment.recipe.slug %}#comment-{{ comment.id }}">{{ comment.recipe.title }}</a>
+                                                · {{ comment.created_at|date:"SHORT_DATE_FORMAT" }}
+                                            </small>
+                                            <!-- Botón responder en comentarios en recetas -->
+                                            <button class="btn btn__green reply-button" data-comment-id="{{ comment.id }}"  data-url="{% url 'recipes:add_comment' comment.recipe.slug %}">
+                                                {% trans "Responder" %}
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>{% trans "Aún no han comentado en tus recetas." %}</p>
+                            {% endif %}
+                        </div>
+                    </details>                  
+                </section>
+                <section class="tab-content" id="ratings">
+                    <h2>{% trans "Mis puntuaciones" %}</h2>
+                    {% if user_ratings %}
+                        <ul class="user-ratings-list">
+                        {% for rating in user_ratings %}
+                            <li>
+                            <a href="{% url 'recipes:recipe_detail' rating.recipe.slug %}" class="rating-item">
+                                <img src="{{ rating.recipe.photo.url }}" alt="{{ rating.recipe.title }}" class="recipe-thumb">
+                                <div class="rating-info">
+                                    <h3>{{ rating.recipe.title }}</h3>
+                                    <div>
+                                        <span class="stars"><i class="fas fa-pizza-slice full"></i> {{ rating.score }} / 5</span> {% trans "Por" %} <strong>{{ rating.recipe.author }}</strong>
+                                    </div>                                    
+                                </div>
+                            </a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>{% trans "Aún no has puntuado ninguna receta." %}</p>
+                    {% endif %}
+                </section>
+            </div>
+            {% include "_includes/_custom-scrollbar.html" %}        
+        </section>
+    </div>
+</div>
+
+<div id="deleteProfileModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "¿Eliminar tu cuenta?" %}</h2>
+        <p>{% trans "Esta acción no se puede deshacer. ¿Estás absolutamente seguro?" %}</p>
+        <form method="post" action="{% url 'accounts:delete_profile' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn__confirm">{% trans "Sí, eliminar" %}</button>
+            <button type="button" id="btnCancelDelete" class="btn btn__yellow">{% trans "Cancelar" %}</button>
+        </form>
+    </div>
+</div>
+      
+<div id="passwordModal" class="modal">
+    <div class="modal-content">
+        <h2>{% trans "Cambiar contraseña" %}</h2>
+        <form method="post" action="{% url 'accounts:password_change' %}">
+            {% csrf_token %}
+            
+            <input 
+                type="text" 
+                name="username" 
+                value="{{ request.user.username }}" 
+                autocomplete="username" 
+                style="position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden;" 
+                aria-hidden="true" 
+                tabindex="-1" 
+                readonly
+            />
+
+            <div class="form-group">
+                <label for="id_old_password">{% trans "Contraseña actual" %}</label>
+                {{ password_change_form.old_password }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_new_password1">{% trans "Nueva contraseña" %}</label>
+                {{ password_change_form.new_password1 }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_new_password2">{% trans "Confirmar nueva contraseña" %}</label>
+                {{ password_change_form.new_password2 }}
+            </div>
+    
+            <button type="submit" class="btn btn__confirm">{% trans "Guardar nueva contraseña" %}</button>
+            <button type="button" id="closePasswordModal" class="btn btn__yellow">{% trans "Cancelar" %}</button>
+        </form>
+    </div>
+</div>   
+
+<script src="{% static "js/helpers/reply_modal.min.js" %}"></script>
+<script src="{% static "js/helpers/custom-scrollbar.min.js" %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {            
+        const deleteBtn = document.getElementById('btnDeleteProfile');
+        const cancelBtn = document.getElementById('btnCancelDelete');
+        const deleteModal = document.getElementById('deleteProfileModal');
+        const avatarModal = document.getElementById('avatarModal');
+        const openAvatarModalBtn = document.getElementById('openAvatarModal');
+
+        if (openAvatarModalBtn && avatarModal) {
+            openAvatarModalBtn.addEventListener('click', () => {
+                avatarModal.classList.add('active');
+            });
+
+            avatarModal.addEventListener('click', e => {
+                if (e.target === avatarModal) {
+                    avatarModal.classList.remove('active');
+                }
+            });
+        }
+        
+        document.querySelectorAll("details").forEach((detail) => {
+            const body = detail.querySelector(".accordion-body");
+            
+            detail.addEventListener("toggle", (e) => {
+                if (detail.open) {
+                    // Abrir suavemente
+                    body.style.height = "0px";
+                    body.style.overflow = "hidden";
+                    const fullHeight = body.scrollHeight + "px";
+
+                    requestAnimationFrame(() => {
+                        body.style.transition = "height 0.3s ease";
+                        body.style.height = fullHeight;
+                    });
+
+                    body.addEventListener(
+                        "transitionend",
+                        () => {
+                            body.style.height = "auto";
+                            body.style.overflow = "visible";
+                        },
+                        { once: true }
+                    );
+                } else {
+                    // Cerrar suavemente
+                    const fullHeight = body.scrollHeight + "px";
+                    body.style.height = fullHeight;
+                    body.style.overflow = "hidden";
+
+                    requestAnimationFrame(() => {
+                        body.style.transition = "height 0.3s ease";
+                        body.style.height = "0px";
+                    });
+                }
+            });
+        });
+
+        //boton-modal delete profile
+        if (deleteBtn && deleteModal) {
+            deleteBtn.addEventListener('click', () => {
+                deleteModal.classList.add('active');
+            });
+
+            // Cerrar con el botón "Cancelar"
+            cancelBtn.addEventListener('click', () => {
+            deleteModal.classList.remove('active');
+            });
+
+            window.closeDeleteProfileModal = function () {
+                deleteModal.classList.remove('active');
+            }
+
+            window.addEventListener('click', e => {
+                if (e.target === deleteModal) {
+                    window.closeDeleteProfileModal();
+                }
+            });
+        }
+
+        const openPassBtn = document.getElementById('openPasswordModal');
+        const closePassBtn = document.getElementById('closePasswordModal');
+        const passModal = document.getElementById('passwordModal');
+
+        if (openPassBtn && closePassBtn && passModal) {
+            openPassBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+            passModal.classList.add('active');
+        });
+
+        closePassBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+            passModal.classList.remove('active');
+        });
+
+        // Cierre al hacer click fuera del modal
+        passModal.addEventListener('click', (e) => {
+            if (e.target === passModal) {
+                passModal.classList.remove('active');
+            }
+        });
+    }
+});
+</script>
+{% include "_includes/_reply_modal.html" %}      
+{% include '_includes/_avatar_modal.html' %}
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends 'general/layout.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block meta_description %}{% trans 'Explora nuestra colección de recetas por categoría.' %}{% endblock %}
+{% block meta_keywords %}{% trans "recetas, categorías, comidas, cocinar, recetas vegetarianas" %}{% endblock %}
+
+{% block head_title %}{% trans "Recetas" %}{% endblock %}
+{% block page_title %}{% trans "Recetas" %}{% endblock %}
+
+{% block content %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="message {{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <section class="paper_wrapper">
+    <div class="list-paper">
+      <p class="part1"><span>{% trans 'Consulta algunas categorías destacadadas.' %}</span></p>
+      <p class="part2"><span>{% trans 'También puedes hacer búsqueda más concreta en nuestro motor de búsqueda' %}</span></p>
+      <p class="part3">
+        <a href="{% url 'search' %}">{% trans "Buscar recetas" %}</a> 
+      </p>
+    </div>
+  </section>
+
+  {% if top_recipes %}
+    <section class="recipe-slider" id="slider-top-recipes">
+      <h2>{% trans "Top recetas valoradas" %}</h2>
+      <div class="active-recipe">
+        <a href="{{ top_recipes.0.get_absolute_url }}">
+          <img src="{{ top_recipes.0.photo.url }}" alt="" loading="eager" fetchpriority="high"  width="600" height="380">
+          <h3> {{ top_recipes.0 }} </h3>
+        </a>
+      </div>
+
+      <div class="recipe-thumbnails">
+        <ul>
+          {% for recipe in top_recipes %}
+            <li {% if forloop.first %}class="selected"{% endif %}>
+              <a href="{{ recipe.get_absolute_url }}">
+                <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="slider-arrows">
+        <button class="prev" aria-label="{% trans 'Anterior' %}"><span>&lt;</span></button>
+        <button class="next" aria-label="{% trans 'Siguiente' %}"><span>&gt;</span></button>
+      </div>    
+    </section>
+  {% endif %}
+
+  {% if recent_recipes %}
+    <section class="recipe-slider" id="slider-recent-recipes">
+      <h2>{% trans "Recetas recientes" %}</h2>    
+      <div class="active-recipe">
+        <a href="{{ recent_recipes.0.get_absolute_url }}">
+          <img src="{{ recent_recipes.0.photo.url }}" alt="" loading="lazy"  width="600" height="380">
+          <h3>{{ recent_recipes.0 }}</h3>
+        </a>
+      </div>
+
+      <div class="recipe-thumbnails">
+        <ul>
+          {% for recipe in recent_recipes %}
+            <li {% if forloop.first %}class="selected"{% endif %}>
+              <a href="{{ recipe.get_absolute_url }}">
+                <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="slider-arrows">
+        <button class="prev" aria-label="{% trans 'Anterior' %}"><span>&lt;</span></button>
+        <button class="next" aria-label="{% trans 'Siguiente' %}"><span>&gt;</span></button>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if popular_recipes %}
+  <section class="recipe-slider" id="slider-popular-recipes">
+    <h2>{% trans "Recetas favoritas" %}</h2>
+
+    <div class="active-recipe">
+      <a href="{{ popular_recipes.0.get_absolute_url }}">
+        <img src="{{ popular_recipes.0.photo.url }}" alt="" loading="lazy" width="600" height="380">
+        <h3>{{ popular_recipes.0 }}</h3>
+      </a>
+    </div>
+
+    <div class="recipe-thumbnails">
+      <ul>
+        {% for recipe in popular_recipes %}
+        <li {% if forloop.first %}class="selected"{% endif %}>
+          <a href="{{ recipe.get_absolute_url }}">
+            <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="slider-arrows">
+      <button class="prev" aria-label="{% trans 'Anterior' %}"><span>&lt;</span></button>
+      <button class="next" aria-label="{% trans 'Siguiente' %}"><span>&gt;</span></button>
+    </div>
+  </section>
+  {% endif %}
+
+  {% if easy_recipes %}
+    <section class="recipe-slider" id="slider-easy-recipes">
+      <h2>{% trans "Recetas fáciles" %}</h2>    
+      <div class="active-recipe">
+        <a href="{{ easy_recipes.0.get_absolute_url }}">
+          <img src="{{ easy_recipes.0.photo.url }}" alt="" loading="lazy"  width="600" height="380">
+          <h3>{{ easy_recipes.0 }}</h3>
+        </a>
+      </div>
+
+      <div class="recipe-thumbnails">
+        <ul>
+          {% for recipe in easy_recipes %}
+            <li {% if forloop.first %}class="selected"{% endif %}>
+              <a href="{{ recipe.get_absolute_url }}">
+                <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="slider-arrows">
+        <button class="prev" aria-label="{% trans 'Anterior' %}"><span>&lt;</span></button>
+        <button class="next" aria-label="{% trans 'Siguiente' %}"><span>&gt;</span></button>
+      </div>
+    </section>
+  {% endif %}
+
+  {% if cuisine_recipes %}
+    {% if popular_cuisine %}
+    <section class="recipe-slider" id="slider-cuisine-recipes">
+      <h2>{% trans "Recetas de la cocina" %} {{ popular_cuisine.name }}</h2>
+
+      <div class="active-recipe">
+        <a href="{{ cuisine_recipes.0.get_absolute_url }}">
+          <img src="{{ cuisine_recipes.0.photo.url }}" alt=""  loading="lazy"  width="600" height="380">
+          <h3>{{ cuisine_recipes.0 }}</h3>
+        </a>
+      </div>
+
+      <div class="recipe-thumbnails">
+        <ul>
+          {% for recipe in cuisine_recipes %}
+            <li {% if forloop.first %}class="selected"{% endif %}>
+              <a href="{{ recipe.get_absolute_url }}">
+                <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="slider-arrows">
+        <button class="prev" aria-label="{% trans 'Anterior' %}"><span>&lt;</span></button>
+        <button class="next" aria-label="{% trans 'Siguiente' %}"><span>&gt;</span></button>
+      </div>
+    </section>
+    {% endif %}
+  {% endif %}
+
+  {% if actualidad_recipes %}
+  <section class="recipe-slider" id="slider-actualidad-recipes">
+    <h2>{% trans "Recetas de actualidad" %}: {{ theme_name }} </h2>
+    
+    <div class="active-recipe">
+      <a href="{{ actualidad_recipes.0.get_absolute_url }}">
+        <img src="{{ actualidad_recipes.0.photo.url }}" alt="" loading="lazy" width="600" height="380">
+        <h3>{{ actualidad_recipes.0 }}</h3>
+      </a>
+    </div>
+
+    <div class="recipe-thumbnails">
+      <ul>
+        {% for recipe in actualidad_recipes %}
+          <li {% if forloop.first %}class="selected"{% endif %}>
+            <a href="{{ recipe.get_absolute_url }}">
+              <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}">
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="slider-arrows">
+      <button class="prev" aria-label="{% trans 'Anterior' %}"><span>&lt;</span></button>
+      <button class="next" aria-label="{% trans 'Siguiente' %}"><span>&gt;</span></button>
+    </div>
+  </section>
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const sliders = document.querySelectorAll(".recipe-slider");
+
+    sliders.forEach(slider => {
+      const thumbnails = slider.querySelectorAll(".recipe-thumbnails li");
+      const activeLink = slider.querySelector(".active-recipe a");
+      const activeImage = activeLink ? activeLink.querySelector("img") : null;
+      const activeTitle = activeLink ? activeLink.querySelector("h3") : null;
+      const prevBtn = slider.querySelector(".slider-arrows .prev");
+      const nextBtn = slider.querySelector(".slider-arrows .next");
+
+      if (!thumbnails.length || !activeImage || !activeTitle || !prevBtn || !nextBtn) return;
+
+      // Función para actualizar el activeRecipe
+      const updateActive = (thumb) => {
+        thumbnails.forEach(t => t.classList.remove("selected"));
+        thumb.classList.add("selected");
+
+        const anchor = thumb.querySelector("a");
+        const img = anchor.querySelector("img");
+        const spanText = anchor.querySelector("span") ? anchor.querySelector("span").textContent : null;
+
+        activeLink.href = anchor.href;
+        activeImage.src = img.src;
+        activeImage.alt = img.alt;
+        activeTitle.textContent = spanText ? spanText : img.alt;
+
+        // --- Desplazamiento suave del UL ---
+        const ul = slider.querySelector(".recipe-thumbnails ul");
+        const ulRect = ul.getBoundingClientRect();
+        const thumbRect = thumb.getBoundingClientRect();
+
+        // Posición para centrar el thumbnail
+        const offset = (thumbRect.left - ulRect.left) - (ul.clientWidth / 2 - thumb.clientWidth / 2);
+        ul.scrollTo({
+          left: ul.scrollLeft + offset,
+          behavior: "smooth"
+        });
+      };
+
+      // Inicializar click en cada thumbnail
+      thumbnails.forEach(thumb => {
+        thumb.addEventListener("click", function (e) {
+          e.preventDefault();
+          updateActive(thumb);
+        });
+      });
+
+      // Obtener índice seleccionado
+      const getSelectedIndex = () => {
+        return Array.from(thumbnails).findIndex(t => t.classList.contains("selected"));
+      };
+
+      // Flecha anterior
+      prevBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        const idx = getSelectedIndex();
+        const prevIdx = (idx - 1 + thumbnails.length) % thumbnails.length;
+        updateActive(thumbnails[prevIdx]);
+      });
+
+      // Flecha siguiente
+      nextBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        const idx = getSelectedIndex();
+        const nextIdx = (idx + 1) % thumbnails.length;
+        updateActive(thumbnails[nextIdx]);
+      });
+    });     
+  });
+  </script>
+  
+  {% include "_includes/_aside_social.html" with aside_class="" %}
+  <script src="{% static "js/helpers/aside.min.js" %}"></script>
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'general/layout.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans "Crear receta" %}{% endblock %}
+  
+    <h1>
+        {% block page_title %}
+            {% if form.instance.pk %}
+               {% trans "Editar receta" %}
+            {% else %}
+                {% trans "Crear receta" %}
+            {% endif %}
+        {% endblock %}
+    </h1>
+
+{% block content %}
+<a href="{% url 'recipes:recipe_list' %}" class="btn btn__back">← {% trans "Volver a las recetas" %}</a>
+<div class="padding-wrapper">
+    <div class="recipe-form-wrapper" id="form-container">        
+        {% include "_includes/_recipe_form.html" %}  
+        {% include "_includes/_custom-scrollbar.html" %}     
+    </div>
+</div>
+
+<script src="{% static "js/helpers/custom-scrollbar.js" %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="/static/css/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'js/quill.js' %}"></script>
+
+{% include "_includes/_placeholders.html" %}
+
+<!-- Inicialización -->
+<script> 
+    $(document).ready(function() {
+        $('.select2-multiple').select2({
+            placeholder: "{% trans 'Selecciona o escribe para buscar' %}",
+            allowClear: true,
+            multiple: true,
+            tag:true,
+            
+            tokenSeparators: [',', ' '],
+        });
+    });
+
+    function toggleModal(modalId, action = 'toggle') {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+    
+        if (action === 'open') {
+            modal.classList.add('active');
+        } else if (action === 'close') {
+            modal.classList.remove('active');
+        } else if (action === 'toggle') {
+            modal.classList.toggle('active');
+        }
+    }
+</script>
+<script src="{% static 'js/recipe_form.min.js' %}" type="module"></script>
+
+{% endblock %}

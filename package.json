@@ -1,0 +1,35 @@
+{
+  "name": "good_project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "braces": "^3.0.3",
+    "chokidar": "^4.0.3",
+    "detect-libc": "^1.0.3",
+    "fill-range": "^7.1.1",
+    "immutable": "^5.1.3",
+    "is-extglob": "^2.1.1",
+    "is-glob": "^4.0.3",
+    "is-number": "^7.0.0",
+    "micromatch": "^4.0.8",
+    "node-addon-api": "^7.1.1",
+    "picomatch": "^2.3.1",
+    "readdirp": "^4.1.2",
+    "sass": "^1.89.2",
+    "source-map-js": "^1.2.1",
+    "to-regex-range": "^5.0.1"
+  },
+  "scripts": {
+    "sass": "sass good_project/static/scss/main.scss good_project/static/css/main.css",
+    "sass:watch": "sass --watch good_project/static/scss/main.scss:good_project/static/css/main.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "imagemin-cli": "^8.0.0",
+    "imagemin-webp": "^8.0.0",
+    "terser": "^5.43.1"
+  }
+}

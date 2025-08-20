@@ -1,0 +1,29 @@
+{% extends 'general/layout.html' %}
+{% load i18n %}
+{% load static %}
+{% comment %} mas completo pero replica del create --> ajustar {% endcomment %}
+    {% block head_title %}{% trans "Editar receta" %}{% endblock %}
+    {% block page_title %}{% trans "Editar receta" %}{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'recipes:recipe_list' %}" class="btn btn__back">← {% trans "Volver a las recetas" %}</a>
+<div class="padding-wrapper">
+    <div class="recipe-form-wrapper" id="form-container">
+        {% include "_includes/_recipe_form.html" %}  
+        {% include "_includes/_custom-scrollbar.html" %}  
+    </div>
+</div>
+
+<script src="{% static "js/helpers/custom-scrollbar.min.js" %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="/static/css/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{% static 'js/quill.js' %}"></script>
+     
+{% include "_includes/_placeholders.html" %}
+<script src="{% static 'js/recipe_form.min.js' %}" type="module"></script>
+
+{% endblock %}
