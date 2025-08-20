@@ -2,9 +2,9 @@
 
 <br>
 
-<h1 style="text-align: center;">GOO:D</h1>
+<h1 align="center">🍳 GOO:D 🍽️</h1>
 
-<div style="text-align: center;">
+<div align="center">
 
 ![Django](https://img.shields.io/badge/Django-3.2-green)
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
@@ -14,43 +14,72 @@
 ![Vercel](https://img.shields.io/badge/deployed%20on-Alwaysdata-violet?logo=alwaysdata)
 </div>
 
-<br>
-
-<small>**ES**</small>
-🎉 GOO:D es más que un recetario; es tu compañero para crear, descubrir y compartir platos con pasión y facilidad. Animado y cuidadosamente diseñado, combina lo mejor de **Django**, **JavaScript**, **SASS** y librerías modernas como **Quill** y **Select2** para ofrecer una experiencia culinaria única.
-
-*God! Good! Go!* — Un recetario multilingüe que combina inspiración, calidad y acción para amantes de la cocina.
-
-Además, GOO:D significa también **Comparte Disfruta Sonríe :D** — porque cocinar es todo eso.  
-
 ---
 
-<small>**EN**</small>🎉 GOO:D is more than just a cookbook; it’s your companion to create, discover, and share dishes with passion and ease. Playful yet carefully crafted, it blends the power of **Django**, **JavaScript**, **SASS**, and modern libraries like **Quill** and **Select2** to deliver a unique culinary experience.  
+### 🇪🇸 Español
+
+🎉 **GOO:D** es más que un recetario; es tu compañero para crear, descubrir y compartir platos con pasión y facilidad.  
+Animado y cuidadosamente diseñado, combina lo mejor de **Django**, **JavaScript**, **SASS** y librerías modernas como **Quill** y **Select2** para ofrecer una experiencia culinaria única.  
+
+*God! Good! Go!* — Un recetario multilingüe que combina inspiración, calidad y acción para amantes de la cocina.  
+
+Además, GOO:D significa también **Comparte Disfruta Sonríe :D** — porque cocinar es todo eso.
+
+
+### 🇬🇧 English
+
+🎉 **GOO:D** is more than just a cookbook; it’s your companion to create, discover, and share dishes with passion and ease.  
+Playful yet carefully crafted, it blends the power of **Django**, **JavaScript**, **SASS**, and modern libraries like **Quill** and **Select2** to deliver a unique culinary experience.  
 
 *God! Good! Go!* — A multilingual recipe book that brings together inspiration, quality, and action for food lovers.  
 
-And GOO:D also means **Share Enjoy Smile :D** — because cooking is all of that.  
+And GOO:D also means **Share Enjoy Smile :D** — because cooking is all of that.
+
 
 <br>
 
+---
+
 ## 📸 Capturas de pantalla  
-### (Screenshots / Schermate / Captures / Képernyőképek / Capturas)
+### Screenshots | Schermate | Captures | Képernyőképek | Capturas
+
+<details>
+<summary>🔹Inicio / Home 🔹 Recetas / Recipes 🔹 Detalle receta / Recipe page🔹</summary>
+
+  <br>
 
 | Inicio / Home | Recetas / Recipes | Detalle receta / Recipe page |
 |---------------|------------------|-------------------|
 | ![Inicio](./assets/GOO-D-Inicio.jpg) | ![Recetas](./assets/pagina-recetas.jpg) | ![Detalle](./assets/detalle-receta.png)|
 
+</details>
+
+<details>
+<summary>🔸Buscador / Search 🔸 Perfil (datos / data) 🔸 Perfil (recetas / recipes)🔸</summary>
+
+  <br>
+
 | Buscador / Search | Perfil / Profile (datos / data) | Perfil / Profile (recetas /recipes) |
 |------------------------------|--------------------------|----------------------------|
 | ![Buscador](./assets/buscar-recetas.png)  | ![Perfil datos](./assets/perfil-datos-usuario.png) | ![Perfil recetas](./assets/perfil-recetas.png) |
+
+</details>
+
+<details>
+<summary>🔺Perfil (favoritas / favorites) 🔺 Comentarios / Comments 🔺 Puntuaciones / Rating🔺</summary>
+
+  <br>
 
 | Perfil / Profile (favoritas / favorites) | Perfil / Profile (comentarios / comments) | Perfil / Profile (puntuaciones / rating) |
 |------------------------------|-------------------------------|---------------------------------|
 | ![Favoritas](./assets/perfil-favoritas.png) | ![Comentarios](./assets/perfil-comentarios.png) | ![Puntuaciones](./assets/perfil-puntuaciones.png) |
 
+</details>
+
+  <br>
 
 ## 🎥 Demo en vídeo
-### (Video demo / Demo video / Demo in video / Demostració en vídeo / Videó bemutató / Demonstração em vídeo)
+### Demo video | Demo in video | Demostració en vídeo | Videó bemutató | Demonstração em vídeo
 
 | 🏠 Home | 📋 Recipes | 📖 Recipe page | ✏️ Create / Update form |
 |---------|------------|----------------|-------------------------|
@@ -92,7 +121,9 @@ And GOO:D also means **Share Enjoy Smile :D** — because cooking is all of that
 | Subir recetas (convertirse en autor)               | ❌                        | ✅                       |
 | Editar / borrar recetas propias                    | ❌                        | ✅ (solo autores)        |
 
-#### 🛠️ Administración
+<br>
+
+### 🛠️ Administración
 - Panel de Django Admin completo.
 - Gestión de usuarios, recetas, ingredientes, categorías y más.
 - Solo accesible para superusuarios.
@@ -121,30 +152,12 @@ Los formularios de creación/edición de recetas permiten:
 <br>
 
 ### 🎨 Interfaz y diseño
-- Responsive (mobile-first)
-- Animaciones y microinteracciones cuidadas
-- Navegación creativa:
-  - Logo: plato giratorio con mantel al hover/click
-  - Utensilios como enlaces, mesa puesta como menú
-- Página de lista de recetas con varias secciones:
-  - Top recetas: según puntuación media
-  - Recientes: por fecha de publicación
-  - Favoritas: las más guardadas
-  - Fáciles:nivel de dificultad "fácil"
-  - Recetas de la cocina "xyz"(dinámico): del tipo de cocina con más recetas subidas
-  - Recetas de actualidad (dinámico): se activan y muestran las recetas según temática (temporadas, estaciones, festividades concretas: Halloween, Navidad, Nochevieja, St. Valentin, Carnaval, Día del Padre/de la Madre, Pascua, etc.) 
+| 🧩 **Bloque**                      | 📋 **Contenido**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌐 General                         | • Responsive (mobile-first)<br>• Animaciones y microinteracciones cuidadas<br>• Navegación creativa:<br>  🔄 Logo: plato giratorio con mantel al hover/click<br>  🍴 Utensilios como enlaces, mesa puesta como menú                                                                                                                                                                                                                                                                                                             |
+| 📑 Página de lista de recetas      | • Top recetas: según puntuación media ⭐<br>• Recientes: por fecha de publicación 🕒<br>• Favoritas: las más guardadas 💖<br>• Fáciles: nivel de dificultad "fácil" 🥄<br>• Recetas de la cocina "xyz" (dinámico): del tipo de cocina con más recetas subidas 🍲<br>• Recetas de actualidad (dinámico): se activan y muestran las recetas según temática 🎉 (temporadas, estaciones, festividades: Halloween 🎃, Navidad 🎄, Nochevieja 🎆, San Valentín 💘, Carnaval 🎭, Día del Padre 👨, Día de la Madre 👩, Pascua 🐣, etc.) |
+| 👤 Sección especial de "Mi perfil" | • Diseño único ✨<br>• Secciones varias:<br>  📝 Datos personales: datos de usuario, cambios de avatar, email o contraseña<br>  📤 Recetas subidas propias<br>  💾 Favoritas: las recetas marcadas como favoritas y guardadas en esta sección<br>  💬 Comentarios:<br>    – "mis comentarios"<br>    – "respuestas a mis comentarios"<br>    – "comentarios en mis recetas"<br>  ⭐ Mis puntuaciones: lista de recetas valoradas por el usuario                                                                                   |
 
-- Sección especial de "Mi perfil":
-  - Diseño único 
-  - Secciones varias: 
-    - Datos personales: datos de usuario, cambios de avatar, email o contraseña
-    - Recetas subidas propias 
-    - Favoritas: las recetas marcadas como favoritas y guardadas en esta sección
-    - Comentarios:
-      - "mis comentarios"
-      - "respuestas a mis comentarios"
-      - "comentarios en mis recetas"
-    - Mis puntuaciones: lista de recetas valoradas por el usuario 
 
 ### 📧 Extras
 
@@ -213,7 +226,9 @@ La traducción automática se realiza mediante una API externa en producción.
 | Upload recipes (become an author)                   | ❌                      | ✅                   |
 | Edit / delete own recipes                           | ❌                      | ✅ (authors only)    |
 
-#### 🛠️ Administration
+<br>
+
+### 🛠️ Administration
 - Full Django Admin panel  
 - Management of users, recipes, ingredients, categories, and more  
 - Accessible only to superusers  
@@ -243,30 +258,12 @@ The recipe creation/editing forms allow:
 
 ### 🎨 Interface and design
 
-- Responsive (mobile-first)  
-- Carefully crafted animations and micro-interactions  
-- Creative navigation:  
-  - Logo: spinning plate with animated tablecloth on hover/click  
-  - Utensils as links, table set as menu  
-- Recipe list page with several sections:  
-  - Top recipes: by average rating  
-  - Recent: by publication date  
-  - Favorites: most saved  
-  - Easy: “easy” difficulty recipes  
-  - Cuisine “xyz” (dynamic): cuisine type with most uploaded recipes  
-  - Seasonal recipes (dynamic): activated and shown depending on theme (seasons, holidays, special events: Halloween, Christmas, New Year’s Eve, Valentine’s Day, Carnival, Mother’s/Father’s Day, Easter, etc.)  
+| 🧩 **Block**                    | 📋 **Content**                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌐 General                      | • Responsive (mobile-first)<br>• Carefully crafted animations and micro-interactions<br>• Creative navigation:<br>  🔄 Logo: spinning plate with animated tablecloth on hover/click<br>  🍴 Utensils as links, table set as menu                                                                                                                                                                                                                                        |
+| 📑 Recipe list page             | • Top recipes: by average rating ⭐<br>• Recent: by publication date 🕒<br>• Favorites: most saved 💖<br>• Easy: “easy” difficulty recipes 🥄<br>• Cuisine “xyz” (dynamic): cuisine type with most uploaded recipes 🍲<br>• Seasonal recipes (dynamic): activated and shown depending on theme 🎉 (seasons, holidays, special events: Halloween 🎃, Christmas 🎄, New Year’s Eve 🎆, Valentine’s Day 💘, Carnival 🎭, Father’s Day 👨, Mother’s Day 👩, Easter 🐣, etc.) |
+| 👤 Special “My profile” section | • Unique design ✨<br>• Several areas:<br>  📝 Personal data: user info, avatar, email or password changes<br>  📤 Own uploaded recipes<br>  💾 Favorites: recipes marked as favorites and saved in this section<br>  💬 Comments:<br>    – “my comments”<br>    – “replies to my comments”<br>    – “comments on my recipes”<br>  ⭐ My ratings: list of recipes rated by the user                                                                                       |
 
-- Special “My profile” section:  
-  - Unique design  
-  - Several areas:  
-    - Personal data: user info, avatar, email or password changes  
-    - Own uploaded recipes  
-    - Favorites: recipes marked as favorites and saved in this section 
-    - Comments:  
-      - “my comments”  
-      - “replies to my comments”  
-      - “comments on my recipes”  
-    - My ratings: list of recipes rated by the user  
 
 <br>
 
@@ -302,7 +299,7 @@ Access the app at:
 </details>
 
 <details>
-<summary>🇦🇩 Català</summary>
+<summary>🇨🇦 Català</summary>
 
 ## 🍽️ Què és GOO:D?
 
@@ -334,7 +331,9 @@ Access the app at:
 | Pujar receptes (esdevenir autor)                     | ❌                         | ✅                     |
 | Editar / eliminar receptes pròpies                   | ❌                         | ✅ (només autors)      |  
 
-#### 🛠️ Administració  
+<br>
+
+### 🛠️ Administració  
 - Panell complet de Django Admin.  
 - Gestió d’usuaris, receptes, ingredients, categories i més.  
 - Només accessible per a superusuaris.  
@@ -364,30 +363,12 @@ Els formularis de creació/edició de receptes permeten:
 
 ### 🎨 Interfície i disseny  
 
-- Responsive (mobile-first)  
-- Animacions i microinteraccions cuidades  
-- Navegació creativa:  
-  - Logo: plat giratori amb estovalles animades en hover/click  
-  - Estris com a enllaços, taula parada com a menú  
-- Pàgina de llistat de receptes amb diverses seccions:  
-  - Receptes top: per mitjana de valoracions  
-  - Recents: per data de publicació  
-  - Preferides: més guardades  
-  - Fàcils: receptes amb dificultat “fàcil”  
-  - Receptes de la Cuina “xyz” (dinàmica): tipus de cuina amb més receptes pujades  
-  - Receptes d'actualitat (dinàmica): receptes activades i mostrades segons temàtica (estacions, festes, esdeveniments especials: Halloween, Nadal, Cap d’Any, Sant Valentí, Carnestoltes, Dia de la Mare/Pare, Pasqua, Pasqua etc.)  
+| 🧩 **Bloc**                        | 📋 **Contingut**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌐 General                         | • Responsive (mobile-first)<br>• Animacions i microinteraccions cuidades ✨<br>• Navegació creativa:<br>  🔄 Logo: plat giratori amb estovalla animada en hover/click<br>  🍴 Estris com a enllaços, taula parada com a menú                                                                                                                                                                                                                                                                                           |
+| 📑 Pàgina de receptes              | • Receptes top: per mitjana de valoracions ⭐<br>• Recents: per data de publicació 🕒<br>• Preferides: més guardades 💖<br>• Fàcils: receptes amb dificultat “fàcil” 🥄<br>• Receptes de la Cuina “xyz” (dinàmica): tipus de cuina amb més receptes pujades 🍲<br>• Receptes d’actualitat (dinàmica): activades i mostrades segons temàtica 🎉 (estacions, festes, esdeveniments especials: Halloween 🎃, Nadal 🎄, Cap d’Any 🎆, Sant Valentí 💘, Carnestoltes 🎭, Dia del Pare 👨, Dia de la Mare 👩, Pasqua 🐣, etc.) |
+| 👤 Secció especial “El meu perfil” | • Disseny únic ✨<br>• Diverses àrees:<br>  📝 Dades personals: informació d’usuari, canvi d’avatar, email o contrasenya<br>  📤 Receptes pròpies pujades<br>  💾 Favorites: receptes marcades i guardades en aquesta secció<br>  💬 Comentaris:<br>    – “els meus comentaris”<br>    – “respostes als meus comentaris”<br>    – “comentaris a les meves receptes”<br>  ⭐ Les meves valoracions: llista de receptes valorades per l’usuari                                                                              |
 
-- Secció especial “El meu perfil”:  
-  - Disseny únic  
-  - Diverses àrees:  
-    - Dades personals: informació d’usuari, canvi d’avatar, email o contrasenya  
-    - Receptes pròpies pujades  
-    - Favorites: receptes marcades i guardades en aquest secció
-    - Comentaris:  
-      - “els meus comentaris”  
-      - “respostes als meus comentaris”  
-      - “comentaris a les meves receptes”  
-    - Les meves valoracions: llista de receptes valorades per l’usuari  
 
 <br>
 
@@ -456,7 +437,9 @@ La traducció automàtica es realitza mitjançant una API externa en producció.
 | Caricare ricette (diventare autore)                  | ❌                          | ✅                    |
 | Modificare / eliminare le proprie ricette            | ❌                          | ✅ (solo autori)      |  
 
-#### 🛠️ Amministrazione  
+<br>
+
+### 🛠️ Amministrazione  
 - Pannello completo di Django Admin  
 - Gestione di utenti, ricette, ingredienti, categorie e altro  
 - Accesso riservato ai superuser  
@@ -486,30 +469,11 @@ I form di creazione/modifica delle ricette permettono di:
 
 ### 🎨 Interfaccia e design  
 
-- Responsive (mobile-first)  
-- Animazioni e microinterazioni curate  
-- Navigazione creativa:  
-  - Logo: piatto rotante con tovaglia animata su hover/click  
-  - Utensili come link, tavola apparecchiata come menù  
-- Pagina elenco ricette con diverse sezioni:  
-  - Ricette top: per media delle valutazioni  
-  - Recenti: per data di pubblicazione  
-  - Preferite: più salvate  
-  - Facili: ricette con difficoltà “facile”  
-  - Ricette dalla cucina “xyz” (dinamica): tipo di cucina con più ricette caricate  
-  - Ricette stagionali (dinamiche): ricette attivate e mostrate in base al periodo (stagioni, feste, eventi speciali: Halloween, Natale, Capodanno, San Valentino, Carnevale, Festa della mamma/papà, Pasqua, ecc.)  
-
-- Sezione speciale “Il mio profilo”:  
-  - Design personalizzato  
-  - Diverse aree:  
-    - Dati personali: info utente, cambio avatar, email o password  
-    - Ricette proprie caricate  
-    - Preferite: Ricette contrassegnate come preferite e salvate in questa sezione    
-    - Commenti:  
-      - “i miei commenti”  
-      - “risposte ai miei commenti”  
-      - “commenti alle mie ricette”  
-    - Le mie valutazioni: elenco delle ricette valutate dall’utente  
+| 🧩 **Blocco**                        | 📋 **Contenuto**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌐 Generale                          | • Responsive (mobile-first)<br>• Animazioni e microinterazioni curate ✨<br>• Navigazione creativa:<br>  🔄 Logo: piatto rotante con tovaglia animata su hover/click<br>  🍴 Utensili come link, tavola apparecchiata come menù                                                                                                                                                                                                                                                                                   |
+| 📑 Pagina ricette                    | • Ricette top: per media delle valutazioni ⭐<br>• Recenti: per data di pubblicazione 🕒<br>• Preferite: più salvate 💖<br>• Facili: ricette con difficoltà “facile” 🥄<br>• Ricette dalla cucina “xyz” (dinamica): tipo di cucina con più ricette caricate 🍲<br>• Ricette stagionali (dinamiche): attivate e mostrate in base al periodo 🎉 (stagioni, feste, eventi speciali: Halloween 🎃, Natale 🎄, Capodanno 🎆, San Valentino 💘, Carnevale 🎭, Festa della mamma 👩, Festa del papà 👨, Pasqua 🐣, ecc.) |
+| 👤 Sezione speciale “Il mio profilo” | • Design personalizzato ✨<br>• Diverse aree:<br>  📝 Dati personali: info utente, cambio avatar, email o password<br>  📤 Ricette proprie caricate<br>  💾 Preferite: ricette contrassegnate e salvate in questa sezione<br>  💬 Commenti:<br>    – “i miei commenti”<br>    – “risposte ai miei commenti”<br>    – “commenti alle mie ricette”<br>  ⭐ Le mie valutazioni: elenco delle ricette valutate dall’utente                                                                                             |
 
 <br>
 
@@ -578,7 +542,9 @@ A **GOO:D** egy webes receptmegosztó platform, többnyelvű támogatással, res
 | Receptek feltöltése (szerzővé válás)                 | ❌                                  | ✅                          |
 | Saját receptek szerkesztése / törlése                | ❌                                  | ✅ (csak a szerző)          |  
 
-#### 🛠️ Adminisztráció  
+<br>
+
+### 🛠️ Adminisztráció  
 - Teljes Django Admin felület  
 - Felhasználók, receptek, hozzávalók, kategóriák stb. kezelése  
 - Hozzáférés csak szuperusereknek  
@@ -610,30 +576,11 @@ A recept létrehozó/szerkesztő űrlap lehetővé teszi:
 
 ### 🎨 Felület és dizájn  
 
-- Reszponzív (mobile-first)  
-- Gondosan megtervezett animációk és mikrointerakciók  
-- Kreatív navigáció:  
-  - Logó: forgó tányér animált terítővel hover/kattintásra  
-  - Eszközök mint linkek, megterített asztal mint menü  
-- Receptek listázása különböző szekciókban:  
-  - Top receptek: értékelési átlag alapján  
-  - Legújabbak: feltöltési dátum szerint  
-  - Kedvencek: legtöbbször elmentett receptek  
-  - Könnyű: “könnyű” nehézségű receptek  
-  - “xyz” konyha receptjei (dinamikus): a legtöbb receptet tartalmazó nemzetközi konyha  
-  - Szezonális receptek (dinamikus): időszakhoz igazodó receptek (évszakok, ünnepek, események: Halloween, Karácsony, Szilveszter, Valentin-nap, Farsang, Anyák napja/Apák napja, Húsvét stb.)  
-
-- Speciális “Profilom” szekció:  
-  - Testreszabott dizájn  
-  - Több rész:  
-    - Személyes adatok: felhasználói információk, avatar, email és jelszó módosítása  
-    - Saját feltöltött receptek  
-    - Kedvencek: a kedvencként megjelölt és elmentett receptek, ebben a szakaszban
-    - Kommentek:  
-      - “saját kommentjeim”  
-      - “válaszok a kommentjeimre”  
-      - “kommentek a receptjeimhez”  
-    - Saját értékelések: a felhasználó által értékelt receptek listája  
+| 🧩 **Blokk**                    | 📋 **Tartalom**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌐 Általános                    | • Reszponzív (mobile-first)<br>• Gondosan megtervezett animációk és mikrointerakciók ✨<br>• Kreatív navigáció:<br>  🔄 Logó: forgó tányér animált terítővel hover/kattintásra<br>  🍴 Eszközök mint linkek, megterített asztal mint menü                                                                                                                                                                                                                                                                |
+| 📑 Receptek oldala              | • Top receptek: értékelési átlag alapján ⭐<br>• Legújabbak: feltöltési dátum szerint 🕒<br>• Kedvencek: legtöbbször elmentett receptek 💖<br>• Könnyű: “könnyű” nehézségű receptek 🥄<br>• “xyz” konyha receptjei (dinamikus): a legtöbb receptet tartalmazó konyhatípus 🍲<br>• Szezonális receptek (dinamikus): időszakhoz igazodó receptek 🎉 (évszakok, ünnepek, események: Halloween 🎃, Karácsony 🎄, Szilveszter 🎆, Valentin-nap 💘, Farsang 🎭, Anyák napja 👩, Apák napja 👨, Húsvét 🐣 stb.) |
+| 👤 Speciális “Profilom” szekció | • Testreszabott dizájn ✨<br>• Több rész:<br>  📝 Személyes adatok: felhasználói információk, avatar, email és jelszó módosítása<br>  📤 Saját feltöltött receptek<br>  💾 Kedvencek: a kedvencként megjelölt és elmentett receptek ebben a szakaszban<br>  💬 Kommentek:<br>    – “saját kommentjeim”<br>    – “válaszok a kommentjeimre”<br>    – “kommentek a receptjeimhez”<br>  ⭐ Saját értékelések: a felhasználó által értékelt receptek listája                                                  |
 
 <br>
 
@@ -703,7 +650,9 @@ Foi criada para oferecer uma experiência rica, visual e funcional tanto para us
 | Subir receitas (ser autor)                           | ❌                        | ✅                      |
 | Editar / excluir próprias receitas                   | ❌                        | ✅ (apenas o autor)     |  
 
-#### 🛠️ Administração  
+<br>
+
+### 🛠️ Administração  
 - Painel completo do Django Admin  
 - Gestão de usuários, receitas, ingredientes, categorias etc.  
 - Acesso exclusivo para superusuários  
@@ -733,30 +682,11 @@ O formulário de criação/edição de receitas permite:
 
 ### 🎨 Interface e design  
 
-- Responsivo (mobile-first)  
-- Animações e microinterações cuidadosamente trabalhadas  
-- Navegação criativa:  
-  - Logotipo: prato giratório com toalha animada ao passar/clicar  
-  - Utensílios como links, mesa posta como menu  
-- Listagem de receitas em várias seções:  
-  - Top receitas: por média de avaliações  
-  - Mais recentes: por data de publicação  
-  - Favoritas: mais salvas pelos usuários  
-  - Fáceis: classificadas como “fáceis”  
-  - Receitas de la cozinha “xyz” (dinâmica): cozinha internacional com mais receitas  
-  - Receitas sazonais (dinâmicas): receitas adaptadas ao calendário (estações, feriados e eventos: Halloween, Natal, Ano Novo, Dia dos Namorados, Carnaval, Dia das Mães/Pais, Páscoa etc.)  
-
-- Seção especial “Meu Perfil”:  
-  - Design personalizado  
-  - Dividida em várias partes:  
-    - Dados pessoais: informações do usuário, avatar, alteração de email e senha  
-    - Minhas receitas publicadas  
-    - Favoritos: receitas marcadas como favoritas e salvas nesta seção
-    - Comentários:  
-      - “meus comentários”  
-      - “respostas aos meus comentários”  
-      - “comentários nas minhas receitas”  
-    - Minhas avaliações: lista de receitas avaliadas pelo usuário  
+| 🧩 **Bloco**                   | 📋 **Conteúdo**                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🌐 Geral                       | • Responsivo (mobile-first)<br>• Animações e microinterações cuidadosamente trabalhadas ✨<br>• Navegação criativa:<br>  🔄 Logotipo: prato giratório com toalha animada ao passar/clicar<br>  🍴 Utensílios como links, mesa posta como menu                                                                                                                                                                                                                                                 |
+| 📑 Página de receitas          | • Top receitas: por média de avaliações ⭐<br>• Mais recentes: por data de publicação 🕒<br>• Favoritas: mais salvas pelos usuários 💖<br>• Fáceis: classificadas como “fáceis” 🥄<br>• Receitas da cozinha “xyz” (dinâmica): cozinha com mais receitas publicadas 🍲<br>• Receitas sazonais (dinâmicas): adaptadas ao calendário 🎉 (estações, feriados e eventos: Halloween 🎃, Natal 🎄, Ano Novo 🎆, Dia dos Namorados 💘, Carnaval 🎭, Dia das Mães 👩, Dia dos Pais 👨, Páscoa 🐣 etc.) |
+| 👤 Seção especial “Meu Perfil” | • Design personalizado ✨<br>• Dividida em várias partes:<br>  📝 Dados pessoais: informações do usuário, alteração de avatar, email e senha<br>  📤 Minhas receitas publicadas<br>  💾 Favoritos: receitas marcadas como favoritas e salvas nesta seção<br>  💬 Comentários:<br>    – “meus comentários”<br>    – “respostas aos meus comentários”<br>    – “comentários nas minhas receitas”<br>  ⭐ Minhas avaliações: lista de receitas avaliadas pelo usuário                             |
 
 <br>
 
